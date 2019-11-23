@@ -17,5 +17,8 @@
   "_moduleAliases": {
     "@server": "bin/server/",
     "@shared": "bin/shared/"
+  },
+  "devDependencies": {
+    "@types/ws": "^6.0.3"
   }
 }
