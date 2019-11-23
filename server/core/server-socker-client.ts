@@ -1,6 +1,6 @@
-import { Collection } from 'shared/collection';
-import { SocketClient } from 'shared/core/socket-client';
-import { TickrateLogger } from 'shared/services/tickrate-logger';
+import { Collection } from '@shared/collection';
+import { SocketClient } from '@shared/core/socket-client';
+import { TickrateLogger } from '@shared/services/tickrate-logger';
 
 import { PingLogger } from './ping-logger';
 

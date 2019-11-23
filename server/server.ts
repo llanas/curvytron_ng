@@ -1,7 +1,9 @@
+import 'module-alias/register';
+
+import { Collection } from '@shared/collection';
+import { SocketClient } from '@shared/core/socket-client';
 import * as express from 'express';
 import * as http from 'http';
-import { Collection } from 'shared/collection';
-import { SocketClient } from 'shared/core/socket-client';
 
 import { ServerSocketClient } from './core/server-socker-client';
 

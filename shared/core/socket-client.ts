@@ -1,4 +1,4 @@
-import { EventEmitter } from 'shared/core/event-emitter';
+import { EventEmitter } from '@shared/core/event-emitter';
 
 export abstract class SocketClient extends EventEmitter {
 
@@ -144,7 +144,7 @@ export abstract class SocketClient extends EventEmitter {
         }
         this.sendEvents([event]);
     }
-    
+
     /**
      * Send an event
      */

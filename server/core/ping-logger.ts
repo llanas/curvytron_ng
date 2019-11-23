@@ -1,4 +1,4 @@
-import { EventEmitter } from 'shared/core/event-emitter';
+import { EventEmitter } from '@shared/core/event-emitter';
 
 export class PingLogger extends EventEmitter {
 
