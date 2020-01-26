@@ -16,7 +16,7 @@ export class EventEmitter {
     /**
      * Emit a new event
      */
-    emit(name: string, data: any) {
+    emit(name: string, ...data: any) {
         if (!this.eventMap.hasOwnProperty(name)) {
             return;
         }

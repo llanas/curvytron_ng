@@ -1,4 +1,5 @@
-import { EventEmitter } from '@shared/core/event-emitter';
+import { EventEmitter } from 'events';
+import * as WebSocket from 'ws';
 
 export abstract class SocketClient extends EventEmitter {
 
@@ -155,7 +156,7 @@ export abstract class SocketClient extends EventEmitter {
     /**
      * Play an indexed callback
      */
-    playCallback(id: number, data: object | null) {
+    playCallback = (id: number, data: object | null) => {
         if (typeof (this.callbacks[id]) !== 'undefined') {
             this.callbacks[id](data);
             delete this.callbacks[id];
@@ -165,7 +166,7 @@ export abstract class SocketClient extends EventEmitter {
     /**
      * Create callback
      */
-    createCallback(id: number): (data: any) => any {
+    createCallback = (id: number): (data: any) => any => {
         const client = this;
         return (data) => client.addCallback(id, data);
     }
@@ -180,26 +181,30 @@ export abstract class SocketClient extends EventEmitter {
     /**
      * Send Events
      */
-    flush() {
+    flush = () => {
         if (this.events.length > 0) {
             this.sendEvents(this.events);
             this.events.length = 0;
         }
     }
 
-    onMessage(e: MessageEvent) {
+    onMessage = (e: MessageEvent) => {
 
-        for (const data of JSON.parse(e.data)) {
-            const name = data[0];
+        const data = JSON.parse(e.data);
+        const length = data.length;
+
+        for (let i = 0; i < length; i++) {
+            const source = data[i];
+            const name = source[0];
 
             if (typeof (name) === 'string') {
-                if (data.length === 3) {
-                    this.emit(name, [data[1], this.createCallback(data[2])]);
+                if (source.length === 3) {
+                    this.emit(name, [source[1], this.createCallback(source[2])]);
                 } else {
-                    this.emit(name, data[1]);
+                    this.emit(name, source[1]);
                 }
             } else {
-                this.playCallback(name, typeof (data[1]) !== 'undefined' ? data[1] : null);
+                this.playCallback(name, typeof (source[1]) !== 'undefined' ? source[1] : null);
             }
         }
     }

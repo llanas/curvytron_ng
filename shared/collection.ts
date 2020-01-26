@@ -25,7 +25,7 @@ export class Collection<T> {
     /**
      * Count the size of the collection
      */
-    count(): number {
+    get count(): number {
         return this.ids.length;
     }
 

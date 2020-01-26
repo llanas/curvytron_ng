@@ -1,6 +1,7 @@
 import { Collection } from '@shared/collection';
 import { SocketClient } from '@shared/core/socket-client';
 import { TickrateLogger } from '@shared/services/tickrate-logger';
+import * as WebSocket from 'ws';
 
 import { PingLogger } from './ping-logger';
 
@@ -28,6 +29,7 @@ export class ServerSocketClient extends SocketClient {
         this.on('activity', this.onActivity);
         this.pingLogger.on('latency', this.onLatency);
     }
+
     /**
      * Is this client playing?
      */
@@ -77,7 +79,7 @@ export class ServerSocketClient extends SocketClient {
     /**
      * Who am I?
      */
-    identify(event: any) {
+    identify = (event: any) => {
         event[1](this.id);
     }
 
