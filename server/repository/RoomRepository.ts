@@ -71,7 +71,7 @@ export class RoomRepository extends EventEmitter {
         return name;
     }
 
-    onRoomClose = ({ room }: { room: Room }) => {
+    onRoomClose(this: RoomRepository, { room }: { room: Room }) {
         this.remove(room);
     }
 }

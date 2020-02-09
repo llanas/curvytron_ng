@@ -3,6 +3,7 @@ import { ServerSocketClient } from 'core/ServerSocketClient';
 import { SocketGroup } from 'core/SocketGroup';
 import { EventEmitter } from 'events';
 import { KickManager } from 'manager/kickManager';
+import { KickVote } from 'models/KickVote';
 import { Room } from 'models/Room';
 
 /**
@@ -454,7 +455,7 @@ export class RoomController extends EventEmitter {
     /**
      * Load room
      */
-    loadRoom = () => {
+    loadRoom(this: RoomController) {
         this.room.on('close', this.unloadRoom);
         this.room.on('player:join', this.onPlayerJoin);
         this.room.on('player:leave', this.onPlayerLeave);
@@ -467,7 +468,7 @@ export class RoomController extends EventEmitter {
     /**
      * Unload room
      */
-    unloadRoom = () => {
+    unloadRoom(this: RoomController) {
         this.room.removeListener('close', this.unloadRoom);
         this.room.removeListener('player:join', this.onPlayerJoin);
         this.room.removeListener('player:leave', this.onPlayerLeave);
@@ -481,7 +482,7 @@ export class RoomController extends EventEmitter {
     /**
      * Remove game master
      */
-    removeRoomMaster = () => {
+    removeRoomMaster(this: RoomController) {
         if (this.roomMaster) {
             this.roomMaster.removeListener('close', this.removeRoomMaster);
             this.roomMaster.removeListener('room:leave', this.removeRoomMaster);
@@ -498,7 +499,7 @@ export class RoomController extends EventEmitter {
     /**
      * Check is room is empty and shoul be closed
      */
-    checkForClose = () => {
+    checkForClose(this: RoomController) {
         if (this.clients.isEmpty()) {
             this.room.close();
         }
@@ -507,7 +508,7 @@ export class RoomController extends EventEmitter {
     /**
      * Launch
      */
-    launch = () => {
+    launch(this: RoomController) {
         if (this.launching) {
             this.launching = clearTimeout(this.launching);
         }
@@ -518,7 +519,7 @@ export class RoomController extends EventEmitter {
     /**
      * On client clear players
      */
-    onPlayersClear = (client: ServerSocketClient) => {
+    onPlayersClear(this: RoomController, client: ServerSocketClient) {
         for (let i = client.players.items.length - 1; i >= 0; i--) {
             this.removePlayer(client.players.items[i]);
         }
@@ -527,14 +528,14 @@ export class RoomController extends EventEmitter {
     /**
      * On player join
      */
-    onPlayerJoin = (data: any) => {
+    onPlayerJoin(this: RoomController, data: any) {
         this.socketGroup.addEvent('room:join', { player: data.player.serialize() });
     }
 
     /**
      * On player leave
      */
-    onPlayerLeave = (data: any) => {
+    onPlayerLeave(this: RoomController, data: any) {
         this.socketGroup.addEvent('room:leave', { player: data.player.id });
 
         if (this.room.isReady()) {
@@ -545,14 +546,14 @@ export class RoomController extends EventEmitter {
     /**
      * Warm up room
      */
-    onGame = () => {
+    onGame(this: RoomController) {
         this.socketGroup.addEvent('room:game:start');
     }
 
     /**
      * On kick
      */
-    onKick = (player: ServerSocketClient) => {
+    onKick(this: RoomController, player: ServerSocketClient) {
         this.socketGroup.addEvent('room:kick', player.id);
         this.removePlayer(player);
     }
@@ -560,14 +561,14 @@ export class RoomController extends EventEmitter {
     /**
      * On new vote
      */
-    onVoteNew = (kickVote: KickVote) => {
+    onVoteNew(this: RoomController, kickVote: KickVote) {
         this.socketGroup.addEvent('vote:new', kickVote.serialize());
     }
 
     /**
      * On vote close
      */
-    onVoteClose = (kickVote: KickVote) => {
+    onVoteClose(this: RoomController, kickVote: KickVote) {
         this.socketGroup.addEvent('vote:close', kickVote.serialize());
     }
 

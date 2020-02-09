@@ -6,17 +6,10 @@ import { EventEmitter } from 'events';
 import { BaseAvatar, SerializedBaseAvatar } from './BaseAvatar';
 import { BaseRoom } from './BaseRoom';
 
-export interface IBaseGame {
-
-    update(step: number): void;
-    onRoundEnd(): void;
-    framerate(loop: any, framerate: any): any;
-}
-
 /**
  * BaseGame
  */
-export class BaseGame extends EventEmitter implements IBaseGame {
+export class BaseGame extends EventEmitter {
 
     /**
      * Loop frame rate
@@ -227,7 +220,7 @@ export class BaseGame extends EventEmitter implements IBaseGame {
     /**
      * Start loop
      */
-    start = () => {
+    start(this: BaseGame) {
         if (!this.frame) {
             this.onStart();
             this.loop();
@@ -237,7 +230,7 @@ export class BaseGame extends EventEmitter implements IBaseGame {
     /**
      * Stop loop
      */
-    stop = () => {
+    stop(this: BaseGame) {
         if (this.frame) {
             this.clearFrame();
             this.onStop();
@@ -247,7 +240,7 @@ export class BaseGame extends EventEmitter implements IBaseGame {
     /**
      * Animation loop
      */
-    loop = () => {
+    loop(this: BaseGame) {
         this.newFrame();
 
         const now = new Date().getTime();
@@ -262,14 +255,14 @@ export class BaseGame extends EventEmitter implements IBaseGame {
     /**
      * On frame
      */
-    onFrame = (step: number) => {
+    onFrame(this: BaseGame, step: number) {
         this.update(step);
     }
 
     /**
      * New round
      */
-    newRound = (time: any) => {
+    newRound(this: BaseGame, time: any) {
         this.started = true;
 
         if (!this.inRound) {
@@ -282,7 +275,7 @@ export class BaseGame extends EventEmitter implements IBaseGame {
     /**
      * Check end of round
      */
-    endRound = () => {
+    endRound(this: BaseGame) {
         if (this.inRound) {
             this.inRound = false;
             this.onRoundEnd();
@@ -293,7 +286,7 @@ export class BaseGame extends EventEmitter implements IBaseGame {
     /**
      * FIN DU GAME
      */
-    end = () => {
+    public end(this: BaseGame) {
         if (this.started) {
             this.started = false;
             this.stop();

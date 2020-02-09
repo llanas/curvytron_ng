@@ -72,7 +72,7 @@ export class BaseBonusManager extends EventEmitter {
     /**
      * Clear bonuses
      */
-    clear = () => {
+    clear(this: BaseBonusManager) {
         for (let i = this.bonuses.items.length - 1; i >= 0; i--) {
             this.bonuses.items[i].clear();
         }

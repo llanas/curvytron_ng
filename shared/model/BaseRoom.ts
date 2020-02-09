@@ -97,7 +97,7 @@ export class BaseRoom extends EventEmitter {
     /**
      * Close game
      */
-    closeGame = () => {
+    closeGame(this: BaseRoom) {
         if (this.game) {
 
             delete this.game;

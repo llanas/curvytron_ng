@@ -156,7 +156,7 @@ export abstract class BaseSocketClient extends EventEmitter {
     /**
      * Play an indexed callback
      */
-    playCallback = (id: number, data: object | null) => {
+    playCallback(this: BaseSocketClient, id: number, data: object | null) {
         if (typeof (this.callbacks[id]) !== 'undefined') {
             this.callbacks[id](data);
             delete this.callbacks[id];
@@ -166,7 +166,7 @@ export abstract class BaseSocketClient extends EventEmitter {
     /**
      * Create callback
      */
-    createCallback = (id: number): (data: any) => any => {
+    createCallback(this: BaseSocketClient, id: number): (data: any) => any {
         const client = this;
         return (data) => client.addCallback(id, data);
     }
@@ -181,14 +181,14 @@ export abstract class BaseSocketClient extends EventEmitter {
     /**
      * Send Events
      */
-    flush = () => {
+    flush(this: BaseSocketClient) {
         if (this.events.length > 0) {
             this.sendEvents(this.events);
             this.events.length = 0;
         }
     }
 
-    onMessage = (e: MessageEvent) => {
+    onMessage(this: BaseSocketClient, e: MessageEvent) {
 
         const data = JSON.parse(e.data);
         const length = data.length;

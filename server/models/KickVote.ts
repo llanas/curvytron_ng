@@ -110,7 +110,7 @@ export class KickVote extends EventEmitter {
         };
     }
 
-    close = () => {
+    close(this: KickVote) {
         this.closed = true;
         this.votes.clear();
         this.emit('close', this);

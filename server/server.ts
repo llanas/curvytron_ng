@@ -31,7 +31,7 @@ class Server {
 
     }
 
-    onSocketConnection = (ws: WebSocket, request: http.IncomingMessage) => {
+    onSocketConnection(this: Server, ws: WebSocket, request: http.IncomingMessage) {
         const client = new ServerSocketClient(ws, 1, '127.0.0.1');
         this.clients.add(client);
         client.on('close', this.onSocketDisconnection);
@@ -43,7 +43,7 @@ class Server {
         ws.send('Hi there, I am a WebSocket server');
     }
 
-    onSocketDisconnection = (client: ServerSocketClient) => {
+    onSocketDisconnection(this: Server, client: ServerSocketClient) {
         console.log('Client %s disconnected.', client.id);
         this.clients.remove(client);
     }

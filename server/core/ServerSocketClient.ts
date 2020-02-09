@@ -1,6 +1,6 @@
 import { Collection } from '@shared/collection';
 import { BaseSocketClient } from '@shared/core/BaseSocketClient';
-import { TickrateLogger } from '@shared/service/tickrate-logger';
+import { TickrateLogger } from '@shared/service/TickrateLogger';
 import * as WebSocket from 'ws';
 
 import { PingLogger } from './PingLogger.ts';
@@ -76,16 +76,16 @@ export class ServerSocketClient extends BaseSocketClient {
     }
 
     /**
-     * Who am I?
-     */
-    identify = (event: any) => {
-        event[1](this.id);
-    }
-
-    /**
      * On activity change
      */
     onActivity(active: any) {
         this.active = active;
+    }
+
+    /**
+     * Who am I?
+     */
+    identify(this: ServerSocketClient, event: any) {
+        event[1](this.id);
     }
 }

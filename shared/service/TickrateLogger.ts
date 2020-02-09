@@ -33,14 +33,14 @@ export class TickrateLogger {
     /**
      * Tick
      */
-    tick = (data: any) => {
+    tick(this: TickrateLogger, data: any) {
         this.ticks.push(data);
     }
 
     /**
      * Log
      */
-    log = () => {
+    log(this: TickrateLogger) {
         this.frequency = this.ticks.length;
         this.ticks.length = 0;
     }

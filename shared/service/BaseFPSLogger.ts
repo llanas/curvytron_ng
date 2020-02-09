@@ -40,14 +40,14 @@ export class BaseFPSLogger extends EventEmitter {
     /**
      * End frame
      */
-    onFrame = () => {
+    onFrame(this: BaseFPSLogger) {
         this.frames++;
     }
 
     /**
      * Log
      */
-    log = () => {
+    log(this: BaseFPSLogger) {
         this.frequency = this.frames;
         this.frames = 0;
     }

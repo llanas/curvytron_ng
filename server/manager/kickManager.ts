@@ -75,7 +75,7 @@ export class KickManager extends EventEmitter {
     /**
      * On vote close
      */
-    onVoteClose = (kickVote: KickVote) => {
+    onVoteClose(this: KickManager, kickVote: KickVote) {
         kickVote.removeListener('close', this.onVoteClose);
         this.votes.remove(kickVote);
 
@@ -89,7 +89,7 @@ export class KickManager extends EventEmitter {
     /**
      * On player leave
      */
-    onPlayerLeave = ({ player }: { player: Player }) => {
+    onPlayerLeave(this: KickManager, { player }: { player: Player }) {
         const kickVote = this.votes.getById(player.id);
 
         if (kickVote) {
@@ -100,14 +100,14 @@ export class KickManager extends EventEmitter {
     /**
      * On player leave
      */
-    onClientLeave = ({ client }: { client: ServerSocketClient }) => {
+    onClientLeave(this: KickManager, { client }: { client: ServerSocketClient }) {
         this.removeClient(client);
     }
 
     /**
      * Update votes
      */
-    updateVotes = () => {
+    updateVotes(this: KickManager) {
         const total = this.getTotalClients();
 
         for (let i = this.votes.items.length - 1; i >= 0; i--) {
@@ -118,7 +118,7 @@ export class KickManager extends EventEmitter {
     /**
      * Clear
      */
-    clear = () => {
+    clear(this: KickManager) {
         for (let i = this.votes.items.length - 1; i >= 0; i--) {
             this.votes.items[i].removeListener('close', this.onVoteClose);
         }
