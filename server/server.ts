@@ -1,19 +1,23 @@
 import 'module-alias/register';
 
 import { Collection } from '@shared/collection';
-import { SocketClient } from '@shared/core/socket-client';
+import { BaseSocketClient } from '@shared/core/BaseSocketClient';
 import * as express from 'express';
 import * as http from 'http';
+import { RoomRepository } from 'repository/RoomRepository';
 import * as WebSocket from 'ws';
 
-import { ServerSocketClient } from './core/server-socker-client';
+import { ServerSocketClient } from './core/ServerSocketClient';
 
 class Server {
 
     app: any;
     server: http.Server;
     socket: WebSocket.Server;
-    clients: Collection<SocketClient>;
+
+    clients: Collection<BaseSocketClient>;
+
+    roomRepository: RoomRepository;
 
     constructor(port: number) {
 
@@ -23,6 +27,8 @@ class Server {
         console.log('Listening on port : ' + port);
         this.socket.on('connection', this.onSocketConnection);
         this.clients = new Collection<ServerSocketClient>([], 'id', true);
+
+
     }
 
     onSocketConnection = (ws: WebSocket, request: http.IncomingMessage) => {

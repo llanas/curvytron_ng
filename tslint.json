@@ -4,6 +4,7 @@
     "codelyzer"
   ],
   "rules": {
+    "space-before-function-paren": false,
     "no-trailing-whitespace": false,
     "no-shadowed-variable": false,
     "array-type": false,

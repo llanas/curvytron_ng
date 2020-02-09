@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import * as WebSocket from 'ws';
 
-export abstract class SocketClient extends EventEmitter {
+export abstract class BaseSocketClient extends EventEmitter {
 
     id: string = null;
     socket: WebSocket;
@@ -89,7 +89,7 @@ export abstract class SocketClient extends EventEmitter {
      * @param callback Function to execute
      * @param force IDFK
      */
-    addEvent(name: string, data: object, callback: () => any, force: boolean) {
+    addEvent(name: string, data?: object, callback?: () => any, force?: boolean) {
         const event: any[] = [name];
 
         if (typeof (data) !== 'undefined') {

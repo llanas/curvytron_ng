@@ -6,7 +6,7 @@ export class Collection<T> {
     index: boolean;
     id = 0;
 
-    constructor(items: T[], key: string = 'id', index?: boolean) {
+    constructor(items: T[] = [], key: string = 'id', index?: boolean) {
 
         this.key = key;
         this.index = Boolean(index);
@@ -25,7 +25,7 @@ export class Collection<T> {
     /**
      * Count the size of the collection
      */
-    get count(): number {
+    count(): number {
         return this.ids.length;
     }
 
@@ -161,9 +161,9 @@ export class Collection<T> {
     /**
      * Map
      */
-    map(callable: () => T): Collection<T> {
+    map<E>(callable: () => E): Collection<E> {
         const elements = this.items.map(callable);
-        return new Collection(elements, this.key, this.index);
+        return new Collection<E>(elements, this.key, this.index);
     }
 
     /**

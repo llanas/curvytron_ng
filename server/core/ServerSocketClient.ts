@@ -1,11 +1,11 @@
 import { Collection } from '@shared/collection';
-import { SocketClient } from '@shared/core/socket-client';
-import { TickrateLogger } from '@shared/services/tickrate-logger';
+import { BaseSocketClient } from '@shared/core/BaseSocketClient';
+import { TickrateLogger } from '@shared/service/tickrate-logger';
 import * as WebSocket from 'ws';
 
-import { PingLogger } from './ping-logger';
+import { PingLogger } from './PingLogger.ts';
 
-export class ServerSocketClient extends SocketClient {
+export class ServerSocketClient extends BaseSocketClient {
 
     static pingInterval = 1000;
 
@@ -21,7 +21,6 @@ export class ServerSocketClient extends SocketClient {
 
         this.ip = ip;
         this.id = null;
-        this.active = true;
         this.players = new Collection([], 'id');
         this.pingLogger = new PingLogger(this.socket);
         this.tickrate = new TickrateLogger();
