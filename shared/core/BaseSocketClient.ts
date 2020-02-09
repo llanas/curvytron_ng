@@ -111,7 +111,7 @@ export abstract class BaseSocketClient extends EventEmitter {
     /**
      * Add an event to the list
      */
-    addEvents(sources: any[], force: boolean) {
+    addEvents(sources: any[], force?: boolean) {
         const events = [];
 
         for (const source of sources) {

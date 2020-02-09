@@ -1,40 +1,65 @@
+import { Collection } from '@shared/collection';
 import { BaseGame } from '@shared/model/BaseGame';
+import { GameController } from 'controller/GameController';
+import { World } from 'core/World';
 
+import { Avatar } from './Avatar';
+import { AvatarBody } from './AvatarBody';
+import { GameBonusStack } from './GameBonusStack';
 import { Room } from './Room';
 
 /**
  * Game
  */
 export class Game extends BaseGame {
+
+    world: World;
+    deaths: Collection<any>;
+    controller: any;
+    bonusStack: any;
+    roundWinner: any;
+    gameWinner: any;
+    deathInFrame: boolean;
+
+    /** OVERRIDE */
+    room: Room;
+    avatars: Collection<Avatar>;
+
+    getLoadingAvatars: () => Collection<Avatar>;
+
     constructor(room: Room) {
         super(room);
-        // BaseGame.call(this, room);
-        // this.world = new World(this.size);
-        // this.deaths = new Collection([], 'id');
-        // this.controller = new GameController(this);
-        // this.bonusStack = new GameBonusStack(this);
-        // this.roundWinner = null;
-        // this.gameWinner = null;
-        // this.deathInFrame = false;
-        // this.onPoint = this.onPoint.bind(this);
-        // var avatar, i;
-        // for (i = this.avatars.items.length - 1; i >= 0; i--) {
-        //     avatar = this.avatars.items[i];
-        //     avatar.clear();
-        //     avatar.on('point', this.onPoint);
-        // }
+        this.world = new World(this.size);
+        this.deaths = new Collection([], 'id');
+        this.controller = new GameController(this);
+        this.bonusStack = new GameBonusStack(this);
+        this.roundWinner = null;
+        this.gameWinner = null;
+        this.deathInFrame = false;
+
+        let avatar: Avatar;
+        let i: number;
+        for (i = this.avatars.items.length - 1; i >= 0; i--) {
+            avatar = this.avatars.items[i];
+            avatar.clear();
+            avatar.on('point', this.onPoint);
+        }
     }
+
     /**
      * Update
-     *
-     * @param {Number} step
      */
-    update(step) {
-        var score = this.deaths.count(), avatar, border, i, borderX, borderY, borderAxis, position, killer;
+    update(step: number) {
+        const score = this.deaths.count();
+        let avatar: Avatar;
+        let border: any[];
+        let i: number;
+        let position: any[];
+        let killer: AvatarBody;
         this.deathInFrame = false;
         for (i = this.avatars.items.length - 1; i >= 0; i--) {
             avatar = this.avatars.items[i];
-            dead = false;
+
             if (avatar.alive) {
                 avatar.update(step);
                 border = this.world.getBoundIntersect(avatar.body, this.borderless ? 0 : avatar.radius);
@@ -42,14 +67,12 @@ export class Game extends BaseGame {
                     if (this.borderless) {
                         position = this.world.getOposite(border[0], border[1]);
                         avatar.setPosition(position[0], position[1]);
-                    }
-                    else {
+                    } else {
                         this.kill(avatar, null, score);
                     }
-                }
-                else {
+                } else {
                     if (!avatar.invincible) {
-                        killer = this.world.getBody(avatar.body);
+                        killer = this.world.getBody(avatar.body) as AvatarBody;
                         if (killer) {
                             this.kill(avatar, killer, score);
                         }
@@ -65,43 +88,39 @@ export class Game extends BaseGame {
             this.checkRoundEnd();
         }
     }
+
     /**
      * Kill an avatar
-     *
-     * @param {Avatar} avatar
-     * @param {Body|null} killer
-     * @param {Number} score
      */
-    kill(avatar, killer, score) {
+    kill(avatar: Avatar, killer: AvatarBody | null, score: number) {
         avatar.die(killer);
         avatar.addScore(score);
         this.deaths.add(avatar);
         this.deathInFrame = true;
     }
+
     /**
      * Remove a avatar from the game
-     *
-     * @param {Avatar} avatar
      */
-    removeAvatar(avatar) {
-        BaseGame.prototype.removeAvatar.call(this, avatar);
+    removeAvatar(avatar: Avatar) {
+        super.removeAvatar(avatar);
         this.emit('player:leave', { player: avatar.player });
         this.checkRoundEnd();
     }
+
     /**
      * Is done
-     *
-     * @return {Boolean}
      */
-    isWon() {
-        var present = this.getPresentAvatars().count();
+    isWon(): Avatar | null | boolean {
+        const present = this.getPresentAvatars().count();
         if (present <= 0) {
             return true;
         }
         if (this.avatars.count() > 1 && present <= 1) {
             return true;
         }
-        var maxScore = this.maxScore, players = this.avatars.filter(function () { return this.present && this.score >= maxScore; });
+        const maxScore = this.maxScore;
+        const players = this.avatars.filter(function () { return this.present && this.score >= maxScore; });
         if (players.count() === 0) {
             return null;
         }
@@ -111,6 +130,7 @@ export class Game extends BaseGame {
         this.sortAvatars(players);
         return players.items[0].score === players.items[1].score ? null : players.getFirst();
     }
+
     /**
      * Check if the round should end
      */
@@ -118,38 +138,38 @@ export class Game extends BaseGame {
         if (!this.inRound) {
             return;
         }
-        var alive = false;
-        for (var i = this.avatars.items.length - 1; i >= 0; i--) {
+        let alive = false;
+        for (let i = this.avatars.items.length - 1; i >= 0; i--) {
             if (this.avatars.items[i].alive) {
                 if (!alive) {
                     alive = true;
-                }
-                else {
+                } else {
                     return;
                 }
             }
         }
         this.endRound();
     }
+
     /**
      * Resolve scores
      */
     resolveScores() {
-        var winner;
+        let winner: Avatar;
         if (this.avatars.count() === 1) {
             winner = this.avatars.getFirst();
-        }
-        else {
+        } else {
             winner = this.avatars.match(function () { return this.alive; });
         }
         if (winner) {
             winner.addScore(Math.max(this.avatars.count() - 1, 1));
             this.roundWinner = winner;
         }
-        for (var i = this.avatars.items.length - 1; i >= 0; i--) {
+        for (let i = this.avatars.items.length - 1; i >= 0; i--) {
             this.avatars.items[i].resolveScore();
         }
     }
+
     /**
      * Clear trails
      */
@@ -158,15 +178,17 @@ export class Game extends BaseGame {
         this.world.activate();
         this.emit('clear', { game: this });
     }
+
     /**
      * Update size
      */
     setSize() {
-        BaseGame.prototype.setSize.call(this);
+        super.setSize();
         this.world.clear();
         this.world = new World(this.size);
         this.bonusManager.setSize();
     }
+
     /**
      * Check end of round
      */
@@ -174,13 +196,16 @@ export class Game extends BaseGame {
         this.resolveScores();
         this.emit('round:end', { winner: this.roundWinner });
     }
+
     /**
      * New round
      */
     onRoundNew() {
         this.emit('round:new', { game: this });
-        BaseGame.prototype.onRoundNew.call(this);
-        var avatar, position, i;
+        super.onRoundNew();
+        let avatar: Avatar;
+        let position: any[];
+        let i: number;
         this.roundWinner = null;
         this.world.clear();
         this.deaths.clear();
@@ -188,60 +213,62 @@ export class Game extends BaseGame {
         for (i = this.avatars.items.length - 1; i >= 0; i--) {
             avatar = this.avatars.items[i];
             if (avatar.present) {
-                position = this.world.getRandomPosition(avatar.radius, this.spawnMargin);
+                position = this.world.getRandomPosition(avatar.radius, BaseGame.spawnMargin);
                 avatar.setPosition(position[0], position[1]);
-                avatar.setAngle(this.world.getRandomDirection(avatar.x, avatar.y, this.spawnAngleMargin));
-            }
-            else {
+                avatar.setAngle(this.world.getRandomDirection(avatar.x, avatar.y, BaseGame.spawnAngleMargin));
+            } else {
                 this.deaths.add(avatar);
             }
         }
     }
+
     /**
      * On start
      */
     onStart() {
         this.emit('game:start', { game: this });
-        for (var avatar, i = this.avatars.items.length - 1; i >= 0; i--) {
+        for (let avatar: Avatar, i = this.avatars.items.length - 1; i >= 0; i--) {
             avatar = this.avatars.items[i];
             setTimeout(avatar.printManager.start, 3000);
         }
         this.world.activate();
-        BaseGame.prototype.onStart.call(this);
+        super.onStart();
     }
+
     /**
      * On stop
      */
     onStop() {
         this.emit('game:stop', { game: this });
-        BaseGame.prototype.onStop.call(this);
-        var won = this.isWon();
+        super.onStop();
+        const won = this.isWon();
         if (won) {
             if (won instanceof Avatar) {
                 this.gameWinner = won;
             }
             this.end();
-        }
-        else {
+        } else {
             this.newRound();
         }
     }
+
     /**
      * Set borderless
-     *
-     * @param {Boolean} borderless
      */
-    setBorderless(borderless) {
+    setBorderless(borderless: boolean) {
         if (this.borderless !== borderless) {
-            BaseGame.prototype.setBorderless.call(this, borderless);
+            super.setBorderless(borderless);
             this.emit('borderless', this.borderless);
         }
     }
+
+
     /**
      * FIN DU GAME
      */
-    end() {
-        if (BaseGame.prototype.end.call(this)) {
+    end(this: Game) {
+        const hasEnded = super.end();
+        if (super.end()) {
             this.avatars.clear();
             this.world.clear();
             delete this.world;
@@ -250,22 +277,15 @@ export class Game extends BaseGame {
             delete this.bonusManager;
             delete this.controller;
         }
+        return hasEnded;
+    }
+
+    /**
+     * On avatar add point
+     */
+    onPoint({ x, y, avatar }: { x: number, y: number, avatar: Avatar }) {
+        if (this.started && this.world.active) {
+            this.world.addBody(new AvatarBody(x, y, avatar));
+        }
     }
 }
-
-Game.prototype = Object.create(BaseGame.prototype);
-Game.prototype.constructor = Game;
-
-
-
-
-/**
- * On avatar add point
- *
- * @param {Object} data
- */
-Game.prototype.onPoint = function (data) {
-    if (this.started && this.world.active) {
-        this.world.addBody(new AvatarBody(data.x, data.y, data.avatar));
-    }
-};

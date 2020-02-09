@@ -81,7 +81,6 @@ export class BaseAvatar extends EventEmitter {
     staminaBase: any;
     radius: number;
     invincible: boolean;
-    body: any;
     trailLatency: number;
 
 
@@ -360,6 +359,7 @@ export class BaseAvatar extends EventEmitter {
         this.invincible = BaseAvatar.invincible;
         this.directionInLoop = BaseAvatar.directionInLoop;
         this.angularVelocityBase = BaseAvatar.angularVelocityBase;
+        // ???
         if (this.body) {
             this.body.radius = BaseAvatar.radius;
         }

@@ -48,6 +48,7 @@ export class BaseGame extends EventEmitter {
 
 
     name: string;
+    room: BaseRoom;
     frame: any = null;
     avatars: Collection<BaseAvatar>;
     size: number;
@@ -63,6 +64,7 @@ export class BaseGame extends EventEmitter {
 
         super();
 
+        this.room = room;
         this.name = room.name;
         this.avatars = room.players.map<BaseAvatar>(function () { return this.getAvatar(); });
         this.size = this.getSize(this.avatars.count());
@@ -262,13 +264,13 @@ export class BaseGame extends EventEmitter {
     /**
      * New round
      */
-    newRound(this: BaseGame, time: any) {
+    newRound(this: BaseGame, time = BaseGame.warmupTime) {
         this.started = true;
 
         if (!this.inRound) {
             this.inRound = true;
             this.onRoundNew();
-            setTimeout(this.start, typeof (time) !== 'undefined' ? time : BaseGame.warmupTime);
+            setTimeout(this.start, time);
         }
     }
 
