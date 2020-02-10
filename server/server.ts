@@ -3,14 +3,15 @@ import 'module-alias/register';
 import { Collection } from '@shared/collection';
 import { BaseSocketClient } from '@shared/core/BaseSocketClient';
 import { boundMethod } from 'autobind-decorator';
+import { RoomsController } from 'controller/RoomsController';
+import { ServerSocketClient } from 'core/ServerSocketClient';
+import { EventEmitter } from 'events';
 import * as express from 'express';
 import * as http from 'http';
 import { RoomRepository } from 'repository/RoomRepository';
 import * as WebSocket from 'ws';
 
-import { ServerSocketClient } from './core/ServerSocketClient';
-
-class CurvytronServer {
+export class CurvytronServer extends EventEmitter {
 
     app: any;
     server: http.Server;
@@ -19,15 +20,22 @@ class CurvytronServer {
     clients: Collection<BaseSocketClient>;
 
     roomRepository: RoomRepository;
+    roomsController: RoomsController;
 
     constructor(port: number) {
+
+        super();
 
         this.app = express();
         this.server = new http.Server(this.app);
         this.socket = new WebSocket.Server({ port });
         console.log('Listening on port : ' + port);
         this.socket.on('connection', this.onSocketConnection);
+        this.server.on('errer', this.onError);
         this.clients = new Collection<ServerSocketClient>([], 'id', true);
+
+        this.roomRepository = new RoomRepository();
+        this.roomsController = new RoomsController(this.roomRepository);
     }
 
     @boundMethod
@@ -36,11 +44,10 @@ class CurvytronServer {
         this.clients.add(client);
         client.on('close', this.onSocketDisconnection);
 
-        ws.on('message', (message: string) => {
-            console.log('received: %s', message);
-            ws.send(`hello, you sent -> ${message}`);
-        });
-        ws.send('Hi there, I am a WebSocket server');
+        this.roomsController.attach(client);
+        this.emit('client', client);
+
+        console.log('Client %s connected.', client.id);
     }
 
     @boundMethod
@@ -48,6 +55,14 @@ class CurvytronServer {
         console.log('Client %s disconnected.', client.id);
         this.clients.remove(client);
     }
+
+    /**
+     * On error
+     */
+    @boundMethod
+    onError(error: Error) {
+        console.error('Server Error:', error.stack);
+    }
 }
 
-new CurvytronServer(8090);
+exports.module = new CurvytronServer(8090);
