@@ -359,10 +359,6 @@ export class BaseAvatar extends EventEmitter {
         this.invincible = BaseAvatar.invincible;
         this.directionInLoop = BaseAvatar.directionInLoop;
         this.angularVelocityBase = BaseAvatar.angularVelocityBase;
-        // ???
-        if (this.body) {
-            this.body.radius = BaseAvatar.radius;
-        }
         // useless? this.updateVelocities();
     }
 

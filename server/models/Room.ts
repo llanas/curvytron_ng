@@ -1,15 +1,22 @@
-import { BaseRoom, IBaseRoom } from '@shared/model/BaseRoom';
+import { Collection } from '@shared/collection';
+import { BaseRoom } from '@shared/model/BaseRoom';
 import { RoomController } from 'controller/RoomController';
 
 import { Game } from './Game';
 import { Player } from './Player';
+import { RoomConfig } from './RoomConfig';
 
 /**
  * Room
  */
-export class Room extends BaseRoom implements IBaseRoom<Game> {
+export class Room extends BaseRoom {
 
     controller: RoomController;
+
+    // OVERRIDE
+    game: Game;
+    players: Collection<Player>;
+    config: RoomConfig;
 
     constructor(name: string) {
 

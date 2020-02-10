@@ -176,6 +176,9 @@ export class Avatar extends BaseAvatar {
      */
     clear() {
         super.clear.call(this);
+        if (this.body) {
+            this.body.radius = BaseAvatar.radius;
+        }
         this.printManager.stop();
         this.bodyCount = 0;
     }

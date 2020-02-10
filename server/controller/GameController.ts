@@ -1,4 +1,5 @@
 import { Collection } from '@shared/collection';
+import { Compressor } from '@shared/service/Compressor';
 import { boundMethod } from 'autobind-decorator';
 import { ServerSocketClient } from 'core/ServerSocketClient';
 import { SocketGroup } from 'core/SocketGroup';
@@ -22,7 +23,7 @@ export class GameController {
 
     clients: Collection<ServerSocketClient>;
     socketGroup: SocketGroup;
-    compressor: any;
+    compressor: Compressor;
     waiting: any;
     callbacks: { onReady(): void; onMove(data: any): void; onSpeeding(data: any): void; };
 

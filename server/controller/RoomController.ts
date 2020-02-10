@@ -5,7 +5,10 @@ import { SocketGroup } from 'core/SocketGroup';
 import { EventEmitter } from 'events';
 import { KickManager } from 'manager/kickManager';
 import { KickVote } from 'models/KickVote';
+import { Message } from 'models/Message';
+import { Player } from 'models/Player';
 import { Room } from 'models/Room';
+import { Chat } from 'service/Chat';
 
 /**
  * Room Controller
@@ -23,9 +26,11 @@ export class RoomController extends EventEmitter {
     roomMaster: ServerSocketClient = null;
     launching: NodeJS.Timeout | void = null;
 
-    socketGroup: any; // TOTYPE
-    kickManager: any; // TOTYPE
-    chat: any; // TOTYPE
+    socketGroup: SocketGroup;
+    kickManager: KickManager;
+    chat: Chat;
+
+    callbacks: any;
 
     constructor(room: Room) {
 
@@ -35,7 +40,9 @@ export class RoomController extends EventEmitter {
         this.clients = new Collection<ServerSocketClient>();
         this.socketGroup = new SocketGroup(this.clients);
         this.kickManager = new KickManager(this);
-        // this.chat = new Chat();
+        this.chat = new Chat();
+
+        const controller = this;
         this.callbacks = {
             onTalk(data) { controller.onTalk(this, data[0], data[1]); },
             onPlayerAdd(data) { controller.onPlayerAdd(this, data[0], data[1]); },
@@ -200,7 +207,7 @@ export class RoomController extends EventEmitter {
      */
     promptCheckForClose() {
         if (this.clients.isEmpty()) {
-            setTimeout(this.checkForClose, this.timeToClose);
+            setTimeout(this.checkForClose, RoomController.timeToClose);
         }
     }
 
@@ -302,7 +309,7 @@ export class RoomController extends EventEmitter {
      * On talk
      */
     onTalk(client: ServerSocketClient, content: string, callback: (arg: any) => any) {
-        const message = new Message(client, content.substr(0, Message.prototype.maxLength));
+        const message = new Message(client, content.substr(0, Message.maxLength));
         const success = this.chat.addMessage(message);
         callback({ success });
         if (success) {
@@ -564,7 +571,7 @@ export class RoomController extends EventEmitter {
      * On kick
      */
     @boundMethod
-    onKick(player: ServerSocketClient) {
+    onKick(player: Player) {
         this.socketGroup.addEvent('room:kick', player.id);
         this.removePlayer(player);
     }
