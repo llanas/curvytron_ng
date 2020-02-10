@@ -1,3 +1,4 @@
+import { boundMethod } from 'autobind-decorator';
 import { Avatar } from 'models/Avatar';
 
 /**
@@ -99,7 +100,8 @@ export class PrintManager {
     /**
      * Start
      */
-    start(this: PrintManager) {
+    @boundMethod
+    start() {
         if (!this.active) {
             this.active = true;
             this.lastX = this.avatar.x;

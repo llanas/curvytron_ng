@@ -2,6 +2,7 @@ import 'module-alias/register';
 
 import { Collection } from '@shared/collection';
 import { BaseSocketClient } from '@shared/core/BaseSocketClient';
+import { boundMethod } from 'autobind-decorator';
 import * as express from 'express';
 import * as http from 'http';
 import { RoomRepository } from 'repository/RoomRepository';
@@ -9,7 +10,7 @@ import * as WebSocket from 'ws';
 
 import { ServerSocketClient } from './core/ServerSocketClient';
 
-class Server {
+class CurvytronServer {
 
     app: any;
     server: http.Server;
@@ -27,11 +28,10 @@ class Server {
         console.log('Listening on port : ' + port);
         this.socket.on('connection', this.onSocketConnection);
         this.clients = new Collection<ServerSocketClient>([], 'id', true);
-
-
     }
 
-    onSocketConnection(this: Server, ws: WebSocket, request: http.IncomingMessage) {
+    @boundMethod
+    onSocketConnection(ws: WebSocket, request: http.IncomingMessage) {
         const client = new ServerSocketClient(ws, 1, '127.0.0.1');
         this.clients.add(client);
         client.on('close', this.onSocketDisconnection);
@@ -43,10 +43,11 @@ class Server {
         ws.send('Hi there, I am a WebSocket server');
     }
 
-    onSocketDisconnection(this: Server, client: ServerSocketClient) {
+    @boundMethod
+    onSocketDisconnection(client: ServerSocketClient) {
         console.log('Client %s disconnected.', client.id);
         this.clients.remove(client);
     }
 }
 
-new Server(8090);
+new CurvytronServer(8090);

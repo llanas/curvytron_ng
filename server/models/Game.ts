@@ -1,5 +1,6 @@
 import { Collection } from '@shared/collection';
 import { BaseGame } from '@shared/model/BaseGame';
+import { boundMethod } from 'autobind-decorator';
 import { GameController } from 'controller/GameController';
 import { World } from 'core/World';
 
@@ -266,7 +267,8 @@ export class Game extends BaseGame {
     /**
      * FIN DU GAME
      */
-    end(this: Game) {
+    @boundMethod
+    end() {
         const hasEnded = super.end();
         if (super.end()) {
             this.avatars.clear();

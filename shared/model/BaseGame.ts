@@ -1,6 +1,7 @@
 import { Collection } from '@shared/collection';
 import { BaseBonusManager } from '@shared/manager/BaseBonusManager';
 import { BaseFPSLogger } from '@shared/service/BaseFPSLogger';
+import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
 import { BaseAvatar, SerializedBaseAvatar } from './BaseAvatar';
@@ -222,7 +223,8 @@ export class BaseGame extends EventEmitter {
     /**
      * Start loop
      */
-    start(this: BaseGame) {
+    @boundMethod
+    start() {
         if (!this.frame) {
             this.onStart();
             this.loop();
@@ -232,7 +234,8 @@ export class BaseGame extends EventEmitter {
     /**
      * Stop loop
      */
-    stop(this: BaseGame) {
+    @boundMethod
+    stop() {
         if (this.frame) {
             this.clearFrame();
             this.onStop();
@@ -242,7 +245,8 @@ export class BaseGame extends EventEmitter {
     /**
      * Animation loop
      */
-    loop(this: BaseGame) {
+    @boundMethod
+    loop() {
         this.newFrame();
 
         const now = new Date().getTime();
@@ -257,14 +261,16 @@ export class BaseGame extends EventEmitter {
     /**
      * On frame
      */
-    onFrame(this: BaseGame, step: number) {
+    @boundMethod
+    onFrame(step: number) {
         this.update(step);
     }
 
     /**
      * New round
      */
-    newRound(this: BaseGame, time = BaseGame.warmupTime) {
+    @boundMethod
+    newRound(time = BaseGame.warmupTime) {
         this.started = true;
 
         if (!this.inRound) {
@@ -277,7 +283,8 @@ export class BaseGame extends EventEmitter {
     /**
      * Check end of round
      */
-    endRound(this: BaseGame) {
+    @boundMethod
+    endRound() {
         if (this.inRound) {
             this.inRound = false;
             this.onRoundEnd();
@@ -288,7 +295,8 @@ export class BaseGame extends EventEmitter {
     /**
      * FIN DU GAME
      */
-    public end(this: BaseGame) {
+    @boundMethod
+    end() {
         if (this.started) {
             this.started = false;
             this.stop();

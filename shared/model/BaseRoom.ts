@@ -1,4 +1,5 @@
 import { Collection } from '@shared/collection';
+import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
 import { BaseGame } from './BaseGame';
@@ -97,7 +98,8 @@ export class BaseRoom extends EventEmitter {
     /**
      * Close game
      */
-    closeGame(this: BaseRoom) {
+    @boundMethod
+    closeGame() {
         if (this.game) {
 
             delete this.game;

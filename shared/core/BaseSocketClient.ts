@@ -1,3 +1,4 @@
+import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 import * as WebSocket from 'ws';
 
@@ -154,9 +155,17 @@ export abstract class BaseSocketClient extends EventEmitter {
     }
 
     /**
+     * Object version of the client
+     */
+    serialize(): object {
+        return { id: this.id };
+    }
+
+    /**
      * Play an indexed callback
      */
-    playCallback(this: BaseSocketClient, id: number, data: object | null) {
+    @boundMethod
+    playCallback(id: number, data: object | null) {
         if (typeof (this.callbacks[id]) !== 'undefined') {
             this.callbacks[id](data);
             delete this.callbacks[id];
@@ -166,29 +175,25 @@ export abstract class BaseSocketClient extends EventEmitter {
     /**
      * Create callback
      */
-    createCallback(this: BaseSocketClient, id: number): (data: any) => any {
+    @boundMethod
+    createCallback(id: number): (data: any) => any {
         const client = this;
         return (data) => client.addCallback(id, data);
     }
 
     /**
-     * Object version of the client
-     */
-    serialize(): object {
-        return { id: this.id };
-    }
-
-    /**
      * Send Events
      */
-    flush(this: BaseSocketClient) {
+    @boundMethod
+    flush() {
         if (this.events.length > 0) {
             this.sendEvents(this.events);
             this.events.length = 0;
         }
     }
 
-    onMessage(this: BaseSocketClient, e: MessageEvent) {
+    @boundMethod
+    onMessage(e: MessageEvent) {
 
         const data = JSON.parse(e.data);
         const length = data.length;

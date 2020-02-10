@@ -1,4 +1,5 @@
 import { Collection } from '@shared/collection';
+import { boundMethod } from 'autobind-decorator';
 import { ServerSocketClient } from 'core/ServerSocketClient';
 import { EventEmitter } from 'events';
 
@@ -110,7 +111,8 @@ export class KickVote extends EventEmitter {
         };
     }
 
-    close(this: KickVote) {
+    @boundMethod
+    close() {
         this.closed = true;
         this.votes.clear();
         this.emit('close', this);

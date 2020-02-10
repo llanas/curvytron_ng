@@ -1,4 +1,5 @@
 import { Collection } from '@shared/collection';
+import { boundMethod } from 'autobind-decorator';
 import { ServerSocketClient } from 'core/ServerSocketClient';
 import { SocketGroup } from 'core/SocketGroup';
 import { Avatar } from 'models/Avatar';
@@ -269,14 +270,16 @@ export class GameController {
     /**
      * On player leave
      */
-    onPlayerLeave(this: GameController, { player }: { player: Player }) {
+    @boundMethod
+    onPlayerLeave({ player }: { player: Player }) {
         this.socketGroup.addEvent('game:leave', player.id);
     }
 
     /**
      * Stop waiting for loading players
      */
-    stopWaiting(this: GameController) {
+    @boundMethod
+    stopWaiting() {
         if (this.waiting && !this.game.isReady()) {
             this.waiting = clearTimeout(this.waiting);
 
@@ -293,7 +296,8 @@ export class GameController {
     /**
      * On point
      */
-    onPoint(this: GameController, { avatar, important }: { avatar: Avatar, important: boolean }) {
+    @boundMethod
+    onPoint({ avatar, important }: { avatar: Avatar, important: boolean }) {
         if (!!important) {
             this.socketGroup.addEvent('point', avatar.id);
         }
@@ -302,7 +306,8 @@ export class GameController {
     /**
      * On position
      */
-    onPosition(this: GameController, avatar: Avatar) {
+    @boundMethod
+    onPosition(avatar: Avatar) {
         this.socketGroup.addEvent('position', [
             avatar.id,
             this.compressor.compress(avatar.x),
@@ -313,7 +318,8 @@ export class GameController {
     /**
      * On angle
      */
-    onAngle(this: GameController, avatar: Avatar) {
+    @boundMethod
+    onAngle(avatar: Avatar) {
         this.socketGroup.addEvent('angle', [
             avatar.id,
             this.compressor.compress(avatar.angle)
@@ -323,7 +329,8 @@ export class GameController {
     /**
      * On die
      */
-    onDie(this: GameController, { avatar, killer }: { avatar: Avatar, killer: AvatarBody }) {
+    @boundMethod
+    onDie({ avatar, killer }: { avatar: Avatar, killer: AvatarBody }) {
         this.socketGroup.addEvent('die', [
             avatar.id,
             killer ? killer.id : null,
@@ -334,7 +341,8 @@ export class GameController {
     /**
      * On bonus pop
      */
-    onBonusPop(this: GameController, bonus: Bonus) {
+    @boundMethod
+    onBonusPop(bonus: Bonus) {
         this.socketGroup.addEvent('bonus:pop', [
             bonus.id,
             this.compressor.compress(bonus.x),
@@ -346,28 +354,32 @@ export class GameController {
     /**
      * On bonus clear
      */
-    onBonusClear(this: GameController, bonus: Bonus) {
+    @boundMethod
+    onBonusClear(bonus: Bonus) {
         this.socketGroup.addEvent('bonus:clear', bonus.id);
     }
 
     /**
      * On score
      */
-    onScore(this: GameController, avatar: Avatar) {
+    @boundMethod
+    onScore(avatar: Avatar) {
         this.socketGroup.addEvent('score', [avatar.id, avatar.score]);
     }
 
     /**
      * On round score
      */
-    onRoundScore(this: GameController, avatar: Avatar) {
+    @boundMethod
+    onRoundScore(avatar: Avatar) {
         this.socketGroup.addEvent('score:round', [avatar.id, avatar.roundScore]);
     }
 
     /**
      * On property
      */
-    onProperty(this: GameController, { avatar, property, value }: { avatar: Avatar, property: any, value: any }) {
+    @boundMethod
+    onProperty({ avatar, property, value }: { avatar: Avatar, property: any, value: any }) {
         this.socketGroup.addEvent('property', [
             avatar.id,
             property,
@@ -378,7 +390,8 @@ export class GameController {
     /**
      * On bonus stack add
      */
-    onBonusStack(this: GameController, { avatar, method, bonus }: { avatar: Avatar, method: any, bonus: Bonus }) {
+    @boundMethod
+    onBonusStack({ avatar, method, bonus }: { avatar: Avatar, method: any, bonus: Bonus }) {
         this.socketGroup.addEvent('bonus:stack', [
             avatar.id,
             method,
@@ -393,49 +406,56 @@ export class GameController {
     /**
      * On game start
      */
-    onGameStart(this: GameController) {
+    @boundMethod
+    onGameStart() {
         this.socketGroup.addEvent('game:start');
     }
 
     /**
      * On game stop
      */
-    onGameStop(this: GameController) {
+    @boundMethod
+    onGameStop() {
         this.socketGroup.addEvent('game:stop');
     }
 
     /**
      * On round new
      */
-    onRoundNew(this: GameController) {
+    @boundMethod
+    onRoundNew() {
         this.socketGroup.addEvent('round:new');
     }
 
     /**
      * On round end
      */
-    onRoundEnd(this: GameController, { winner }: { winner: Avatar }) {
+    @boundMethod
+    onRoundEnd({ winner }: { winner: Avatar }) {
         this.socketGroup.addEvent('round:end', winner ? winner.id : null);
     }
 
     /**
      * On clear
      */
-    onClear(this: GameController) {
+    @boundMethod
+    onClear() {
         this.socketGroup.addEvent('clear');
     }
 
     /**
      * On borderless
      */
-    onBorderless(this: GameController, data: any) {
+    @boundMethod
+    onBorderless(data: any) {
         this.socketGroup.addEvent('borderless', data);
     }
 
     /**
      * On end
      */
-    onEnd(this: GameController) {
+    @boundMethod
+    onEnd() {
         this.socketGroup.addEvent('end');
         this.unloadGame();
     }

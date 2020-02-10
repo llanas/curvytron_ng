@@ -1,4 +1,5 @@
 import { Collection } from '@shared/collection';
+import { boundMethod } from 'autobind-decorator';
 import { RoomController } from 'controller/RoomController';
 import { ServerSocketClient } from 'core/ServerSocketClient';
 import { EventEmitter } from 'events';
@@ -75,7 +76,8 @@ export class KickManager extends EventEmitter {
     /**
      * On vote close
      */
-    onVoteClose(this: KickManager, kickVote: KickVote) {
+    @boundMethod
+    onVoteClose(kickVote: KickVote) {
         kickVote.removeListener('close', this.onVoteClose);
         this.votes.remove(kickVote);
 
@@ -89,7 +91,8 @@ export class KickManager extends EventEmitter {
     /**
      * On player leave
      */
-    onPlayerLeave(this: KickManager, { player }: { player: Player }) {
+    @boundMethod
+    onPlayerLeave({ player }: { player: Player }) {
         const kickVote = this.votes.getById(player.id);
 
         if (kickVote) {
@@ -100,14 +103,16 @@ export class KickManager extends EventEmitter {
     /**
      * On player leave
      */
-    onClientLeave(this: KickManager, { client }: { client: ServerSocketClient }) {
+    @boundMethod
+    onClientLeave({ client }: { client: ServerSocketClient }) {
         this.removeClient(client);
     }
 
     /**
      * Update votes
      */
-    updateVotes(this: KickManager) {
+    @boundMethod
+    updateVotes() {
         const total = this.getTotalClients();
 
         for (let i = this.votes.items.length - 1; i >= 0; i--) {
@@ -118,7 +123,8 @@ export class KickManager extends EventEmitter {
     /**
      * Clear
      */
-    clear(this: KickManager) {
+    @boundMethod
+    clear() {
         for (let i = this.votes.items.length - 1; i >= 0; i--) {
             this.votes.items[i].removeListener('close', this.onVoteClose);
         }

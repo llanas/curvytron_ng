@@ -1,3 +1,4 @@
+import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
 /**
@@ -40,14 +41,16 @@ export class BaseFPSLogger extends EventEmitter {
     /**
      * End frame
      */
-    onFrame(this: BaseFPSLogger) {
+    @boundMethod
+    onFrame() {
         this.frames++;
     }
 
     /**
      * Log
      */
-    log(this: BaseFPSLogger) {
+    @boundMethod
+    log() {
         this.frequency = this.frames;
         this.frames = 0;
     }

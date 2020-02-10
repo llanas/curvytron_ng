@@ -1,3 +1,5 @@
+import { boundMethod } from 'autobind-decorator';
+
 /**
  * Tickrate Logger
  */
@@ -33,14 +35,16 @@ export class TickrateLogger {
     /**
      * Tick
      */
-    tick(this: TickrateLogger, data: any) {
+    @boundMethod
+    tick(data: any) {
         this.ticks.push(data);
     }
 
     /**
      * Log
      */
-    log(this: TickrateLogger) {
+    @boundMethod
+    log() {
         this.frequency = this.ticks.length;
         this.ticks.length = 0;
     }

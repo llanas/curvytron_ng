@@ -1,4 +1,5 @@
 import { Collection } from '@shared/collection';
+import { boundMethod } from 'autobind-decorator';
 import { ServerSocketClient } from 'core/ServerSocketClient';
 import { SocketGroup } from 'core/SocketGroup';
 import { EventEmitter } from 'events';
@@ -455,7 +456,8 @@ export class RoomController extends EventEmitter {
     /**
      * Load room
      */
-    loadRoom(this: RoomController) {
+    @boundMethod
+    loadRoom() {
         this.room.on('close', this.unloadRoom);
         this.room.on('player:join', this.onPlayerJoin);
         this.room.on('player:leave', this.onPlayerLeave);
@@ -468,7 +470,8 @@ export class RoomController extends EventEmitter {
     /**
      * Unload room
      */
-    unloadRoom(this: RoomController) {
+    @boundMethod
+    unloadRoom() {
         this.room.removeListener('close', this.unloadRoom);
         this.room.removeListener('player:join', this.onPlayerJoin);
         this.room.removeListener('player:leave', this.onPlayerLeave);
@@ -482,7 +485,8 @@ export class RoomController extends EventEmitter {
     /**
      * Remove game master
      */
-    removeRoomMaster(this: RoomController) {
+    @boundMethod
+    removeRoomMaster() {
         if (this.roomMaster) {
             this.roomMaster.removeListener('close', this.removeRoomMaster);
             this.roomMaster.removeListener('room:leave', this.removeRoomMaster);
@@ -499,7 +503,8 @@ export class RoomController extends EventEmitter {
     /**
      * Check is room is empty and shoul be closed
      */
-    checkForClose(this: RoomController) {
+    @boundMethod
+    checkForClose() {
         if (this.clients.isEmpty()) {
             this.room.close();
         }
@@ -508,7 +513,8 @@ export class RoomController extends EventEmitter {
     /**
      * Launch
      */
-    launch(this: RoomController) {
+    @boundMethod
+    launch() {
         if (this.launching) {
             this.launching = clearTimeout(this.launching);
         }
@@ -519,7 +525,8 @@ export class RoomController extends EventEmitter {
     /**
      * On client clear players
      */
-    onPlayersClear(this: RoomController, client: ServerSocketClient) {
+    @boundMethod
+    onPlayersClear(client: ServerSocketClient) {
         for (let i = client.players.items.length - 1; i >= 0; i--) {
             this.removePlayer(client.players.items[i]);
         }
@@ -528,14 +535,16 @@ export class RoomController extends EventEmitter {
     /**
      * On player join
      */
-    onPlayerJoin(this: RoomController, data: any) {
+    @boundMethod
+    onPlayerJoin(data: any) {
         this.socketGroup.addEvent('room:join', { player: data.player.serialize() });
     }
 
     /**
      * On player leave
      */
-    onPlayerLeave(this: RoomController, data: any) {
+    @boundMethod
+    onPlayerLeave(data: any) {
         this.socketGroup.addEvent('room:leave', { player: data.player.id });
 
         if (this.room.isReady()) {
@@ -546,14 +555,16 @@ export class RoomController extends EventEmitter {
     /**
      * Warm up room
      */
-    onGame(this: RoomController) {
+    @boundMethod
+    onGame() {
         this.socketGroup.addEvent('room:game:start');
     }
 
     /**
      * On kick
      */
-    onKick(this: RoomController, player: ServerSocketClient) {
+    @boundMethod
+    onKick(player: ServerSocketClient) {
         this.socketGroup.addEvent('room:kick', player.id);
         this.removePlayer(player);
     }
@@ -561,14 +572,16 @@ export class RoomController extends EventEmitter {
     /**
      * On new vote
      */
-    onVoteNew(this: RoomController, kickVote: KickVote) {
+    @boundMethod
+    onVoteNew(kickVote: KickVote) {
         this.socketGroup.addEvent('vote:new', kickVote.serialize());
     }
 
     /**
      * On vote close
      */
-    onVoteClose(this: RoomController, kickVote: KickVote) {
+    @boundMethod
+    onVoteClose(kickVote: KickVote) {
         this.socketGroup.addEvent('vote:close', kickVote.serialize());
     }
 

@@ -1,6 +1,7 @@
 import { Collection } from '@shared/collection';
 import { BaseBonus } from '@shared/model/BaseBonus';
 import { BaseGame } from '@shared/model/BaseGame';
+import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
 /**
@@ -72,7 +73,8 @@ export class BaseBonusManager extends EventEmitter {
     /**
      * Clear bonuses
      */
-    clear(this: BaseBonusManager) {
+    @boundMethod
+    clear() {
         for (let i = this.bonuses.items.length - 1; i >= 0; i--) {
             this.bonuses.items[i].clear();
         }

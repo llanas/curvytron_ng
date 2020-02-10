@@ -1,6 +1,7 @@
 import { Collection } from '@shared/collection';
 import { BaseSocketClient } from '@shared/core/BaseSocketClient';
 import { TickrateLogger } from '@shared/service/TickrateLogger';
+import { boundMethod } from 'autobind-decorator';
 import * as WebSocket from 'ws';
 
 import { PingLogger } from './PingLogger.ts';
@@ -85,7 +86,8 @@ export class ServerSocketClient extends BaseSocketClient {
     /**
      * Who am I?
      */
-    identify(this: ServerSocketClient, event: any) {
+    @boundMethod
+    identify(event: any) {
         event[1](this.id);
     }
 }

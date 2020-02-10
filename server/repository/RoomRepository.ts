@@ -1,4 +1,5 @@
 import { Collection } from '@shared/collection';
+import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 import { Room } from 'models/Room';
 
@@ -71,7 +72,8 @@ export class RoomRepository extends EventEmitter {
         return name;
     }
 
-    onRoomClose(this: RoomRepository, { room }: { room: Room }) {
+    @boundMethod
+    onRoomClose({ room }: { room: Room }) {
         this.remove(room);
     }
 }
