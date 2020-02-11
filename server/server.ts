@@ -3,13 +3,14 @@ import 'module-alias/register';
 import { Collection } from '@shared/collection';
 import { BaseSocketClient } from '@shared/core/BaseSocketClient';
 import { boundMethod } from 'autobind-decorator';
-import { RoomsController } from 'controller/RoomsController';
-import { ServerSocketClient } from 'core/ServerSocketClient';
 import { EventEmitter } from 'events';
 import * as express from 'express';
 import * as http from 'http';
-import { RoomRepository } from 'repository/RoomRepository';
 import * as WebSocket from 'ws';
+
+import { RoomsController } from './controller/RoomsController';
+import { ServerSocketClient } from './core/ServerSocketClient';
+import { RoomRepository } from './repository/RoomRepository';
 
 export class CurvytronServer extends EventEmitter {
 

@@ -1,7 +1,7 @@
 /**
  * Room Name Generator
  */
-class RoomNameGenerator {
+export class RoomNameGenerator {
 
     private static adjectives = [
         'awesome',

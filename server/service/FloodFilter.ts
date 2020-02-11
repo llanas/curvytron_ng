@@ -1,5 +1,6 @@
 import { Collection } from '@shared/collection';
-import { Message } from 'models/Message';
+
+import { Message } from '../models/Message';
 
 /**
  * Chat flood filter

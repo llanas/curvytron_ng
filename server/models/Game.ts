@@ -1,9 +1,9 @@
 import { Collection } from '@shared/collection';
 import { BaseGame } from '@shared/model/BaseGame';
 import { boundMethod } from 'autobind-decorator';
-import { GameController } from 'controller/GameController';
-import { World } from 'core/World';
 
+import { GameController } from '../controller/GameController';
+import { World } from '../core/World';
 import { Avatar } from './Avatar';
 import { AvatarBody } from './AvatarBody';
 import { GameBonusStack } from './GameBonusStack';

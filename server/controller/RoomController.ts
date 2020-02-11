@@ -1,14 +1,15 @@
 import { Collection } from '@shared/collection';
 import { boundMethod } from 'autobind-decorator';
-import { ServerSocketClient } from 'core/ServerSocketClient';
-import { SocketGroup } from 'core/SocketGroup';
 import { EventEmitter } from 'events';
-import { KickManager } from 'manager/kickManager';
-import { KickVote } from 'models/KickVote';
-import { Message } from 'models/Message';
-import { Player } from 'models/Player';
-import { Room } from 'models/Room';
-import { Chat } from 'service/Chat';
+
+import { ServerSocketClient } from '../core/ServerSocketClient';
+import { SocketGroup } from '../core/SocketGroup';
+import { KickManager } from '../manager/kickManager';
+import { KickVote } from '../models/KickVote';
+import { Message } from '../models/Message';
+import { Player } from '../models/Player';
+import { Room } from '../models/Room';
+import { Chat } from '../service/Chat';
 
 /**
  * Room Controller

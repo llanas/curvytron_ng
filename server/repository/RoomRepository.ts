@@ -1,7 +1,9 @@
 import { Collection } from '@shared/collection';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
-import { Room } from 'models/Room';
+
+import { Room } from '../models/Room';
+import { RoomNameGenerator } from '../service/RoomNameGenerator';
 
 /**
  * Room Repository

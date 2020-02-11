@@ -1,6 +1,6 @@
 import { BaseAvatar } from '@shared/model/BaseAvatar';
-import { PrintManager } from 'manager/PrintManager';
 
+import { PrintManager } from '../manager/PrintManager';
 import { AvatarBody } from './AvatarBody';
 import { Player } from './Player';
 

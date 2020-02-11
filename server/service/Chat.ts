@@ -1,7 +1,7 @@
 import { Collection } from '@shared/collection';
 import { BaseChat } from '@shared/service/BaseChat';
-import { Message } from 'models/Message';
 
+import { Message } from '../models/Message';
 import { FloodFilter } from './FloodFilter';
 
 /**

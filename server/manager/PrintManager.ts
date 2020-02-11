@@ -1,5 +1,6 @@
 import { boundMethod } from 'autobind-decorator';
-import { Avatar } from 'models/Avatar';
+
+import { Avatar } from '../models/Avatar';
 
 /**
  * Print Manager

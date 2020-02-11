@@ -1,13 +1,14 @@
 import { Collection } from '@shared/collection';
 import { Compressor } from '@shared/service/Compressor';
 import { boundMethod } from 'autobind-decorator';
-import { ServerSocketClient } from 'core/ServerSocketClient';
-import { SocketGroup } from 'core/SocketGroup';
-import { Avatar } from 'models/Avatar';
-import { AvatarBody } from 'models/AvatarBody';
-import { Bonus } from 'models/bonus/Bonus';
-import { Game } from 'models/Game';
-import { Player } from 'models/Player';
+
+import { ServerSocketClient } from '../core/ServerSocketClient';
+import { SocketGroup } from '../core/SocketGroup';
+import { Avatar } from '../models/Avatar';
+import { AvatarBody } from '../models/AvatarBody';
+import { Bonus } from '../models/bonus/Bonus';
+import { Game } from '../models/Game';
+import { Player } from '../models/Player';
 
 /**
  * Game Controller

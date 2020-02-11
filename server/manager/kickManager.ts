@@ -1,11 +1,12 @@
 import { Collection } from '@shared/collection';
 import { boundMethod } from 'autobind-decorator';
-import { RoomController } from 'controller/RoomController';
-import { ServerSocketClient } from 'core/ServerSocketClient';
 import { EventEmitter } from 'events';
-import { KickVote } from 'models/KickVote';
-import { Player } from 'models/Player';
-import { Room } from 'models/Room';
+
+import { RoomController } from '../controller/RoomController';
+import { ServerSocketClient } from '../core/ServerSocketClient';
+import { KickVote } from '../models/KickVote';
+import { Player } from '../models/Player';
+import { Room } from '../models/Room';
 
 /**
  * Kick vote manager

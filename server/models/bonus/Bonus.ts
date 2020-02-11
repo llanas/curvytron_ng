@@ -1,7 +1,8 @@
 import { BaseBonus } from '@shared/model/BaseBonus';
-import { Body } from 'core/Body';
-import { Avatar } from 'models/Avatar';
-import { Game } from 'models/Game';
+
+import { Body } from '../../core/Body';
+import { Avatar } from '../Avatar';
+import { Game } from '../Game';
 
 /**
  * Bonus

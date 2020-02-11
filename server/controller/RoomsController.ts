@@ -1,9 +1,10 @@
 import { boundMethod } from 'autobind-decorator';
-import { ServerSocketClient } from 'core/ServerSocketClient';
-import { SocketGroup } from 'core/SocketGroup';
 import { EventEmitter } from 'events';
-import { Room } from 'models/Room';
-import { RoomRepository } from 'repository/RoomRepository';
+
+import { ServerSocketClient } from '../core/ServerSocketClient';
+import { SocketGroup } from '../core/SocketGroup';
+import { Room } from '../models/Room';
+import { RoomRepository } from '../repository/RoomRepository';
 
 /**
  * Rooms Controller

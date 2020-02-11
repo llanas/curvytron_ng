@@ -1,8 +1,8 @@
 import { Collection } from '@shared/collection';
 import { boundMethod } from 'autobind-decorator';
-import { ServerSocketClient } from 'core/ServerSocketClient';
 import { EventEmitter } from 'events';
 
+import { ServerSocketClient } from '../core/ServerSocketClient';
 import { Player } from './Player';
 
 /**

@@ -1,5 +1,6 @@
 import { BaseMessage } from '@shared/model/BaseMessage';
-import { ServerSocketClient } from 'core/ServerSocketClient';
+
+import { ServerSocketClient } from '../core/ServerSocketClient';
 
 /**
  * Message

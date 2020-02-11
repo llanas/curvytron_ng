@@ -1,5 +1,4 @@
-import { Body } from 'core/Body';
-
+import { Body } from '../core/Body';
 import { Avatar } from './Avatar';
 
 /**

@@ -1,7 +1,7 @@
 import { Collection } from '@shared/collection';
 import { BaseRoom } from '@shared/model/BaseRoom';
-import { RoomController } from 'controller/RoomController';
 
+import { RoomController } from '../controller/RoomController';
 import { Game } from './Game';
 import { Player } from './Player';
 import { RoomConfig } from './RoomConfig';
