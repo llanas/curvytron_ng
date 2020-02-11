@@ -4,6 +4,7 @@ import { boundMethod } from 'autobind-decorator';
 
 import { GameController } from '../controller/GameController';
 import { World } from '../core/World';
+import { BonusManager } from '../manager/BonusManager';
 import { Avatar } from './Avatar';
 import { AvatarBody } from './AvatarBody';
 import { GameBonusStack } from './GameBonusStack';
@@ -16,7 +17,7 @@ export class Game extends BaseGame {
 
     world: World;
     deaths: Collection<any>;
-    controller: any;
+    controller: GameController;
     bonusStack: any;
     roundWinner: any;
     gameWinner: any;
@@ -25,6 +26,7 @@ export class Game extends BaseGame {
     /** OVERRIDE */
     room: Room;
     avatars: Collection<Avatar>;
+    bonusManager: BonusManager;
 
     getLoadingAvatars: () => Collection<Avatar>;
 

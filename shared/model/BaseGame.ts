@@ -60,6 +60,7 @@ export class BaseGame extends EventEmitter {
     bonusManager: any;
     inRound: boolean;
     borderless: boolean;
+    world: any;
 
     constructor(room: BaseRoom) {
 
