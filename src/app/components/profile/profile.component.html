@@ -1,0 +1,95 @@
+<div class="profile-form">
+    <h3 class="title">
+        <button type="button" class="close" (click)="toggleProfile()">
+            &times;
+        </button>
+        My profile
+    </h3>
+    <div class="inner">
+        <fieldset>
+            <legend>Player:</legend>
+
+            <div class="form-row">
+                <div class="col">
+                    <label for="profile-name">My name:</label>
+                    <input id="profile-name" type="text" (blur)="profile.persist()" [value]="profile.name"
+                        class="form-control" name="name" placeholder="Choose a name"
+                        maxlength="{{ NAME_MAX_LENGTH }}" />
+                </div>
+
+                <div class="col">
+                    <label for="profile-color">My color:</label>
+                    <input id="profile-color" type="text" (blur)="profile.persist()" colorpicker="hex"
+                        colorpicker-position="bottom" [value]="profile.color" class="form-control player-color"
+                        name="color" placeholder="#CCCCCC" [style.border-color]="profile.color"
+                        maxlength="{{ COLOR_MAX_LENGTH }}" />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Controls:</legend>
+
+            <div class="form-row">
+                <div class="col" *ngFor="let control of profile.controls; index as i">
+                    <label for="profile-controls-{{ i }}">{{ label }}</label>
+                    <input id="profile-controls-{{ i }}" type="text" value="{{ control.mapper.view }}"
+                        class="form-control control" name="control[{{ i }}]" (focus)="control.start()"
+                        (blur)="control.stop()" (keyup)="blurControls()"
+                        [ngClass]="{ 'active': control.mapper.listening }" />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Options:</legend>
+
+
+            <div class="form-row clearfix">
+                <div class="col">
+                    <label for="profile-radio">Radio:</label>
+                    <span id="profile-radio" class="btn-toggle radio-sound" [ngClass]="{ active: profile.radio }"
+                        (click)="toggleRadio()">
+                        <i class="icon-radio"></i>
+                    </span>
+                </div>
+                <div class="col">
+                    <label for="profile-sound">Sound effects:</label>
+                    <span id="profile-sound" class="btn-toggle sound" [ngClass]="{ active: profile.sound }"
+                        (click)="toggleSound()">
+                        <i class="icon-volume"></i>
+                    </span>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="text-center">
+            <button type="button" class="btn btn-save" (click)="toggleProfile()"><span>I'm done</span></button>
+        </div>
+    </div>
+</div>
+
+<div class="profile-tuto">
+    <div class="content">
+        <p>
+            Hi there!<br />
+            We just need to know a few things before you start playing:
+        </p>
+        <ul class="list">
+            <li class="item first" [ngClass]="{ 'done': profile.name }">
+                Choose yourself player name.
+                <small>A name to find them, a name to rule them all...</small>
+            </li>
+            <li class="item" [ngClass]="{ 'done': profile.color }">
+                Pick a color that your like.
+                <small>Or one that you don't, why should I care...</small>
+            </li>
+            <li class="item final">
+                You can assign new controls if you're not happy with left and right arrows.
+                <small>Yep. Console controllers are supported.</small>
+            </li>
+        </ul>
+    </div>
+</div>

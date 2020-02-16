@@ -29,13 +29,40 @@ export class BasePlayer extends EventEmitter {
     maxLength: number;
     colorMaxLength: number;
 
-    constructor(client: BaseSocketClient, name: string, color: string, ready = false) {
+    /**
+     * Get random Color
+     */
+    static getRandomColor(): string {
+        let color = '';
+        const randomNum = () => Math.ceil(Math.random() * 255).toString(16);
+        while (!BasePlayer.validateColor(color, true)) {
+            color = '#' + randomNum() + randomNum() + randomNum();
+        }
+        return color;
+    }
+
+    /**
+     * Validate color
+     */
+    static validateColor(color: string, yiq?: any /* NFC */): boolean {
+        if (typeof (color) !== 'string') {
+            return false;
+        }
+        const matches = color.match(new RegExp('^#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})$'));
+        if (matches && yiq) {
+            const ratio = ((parseInt(matches[1], 16) * 0.4) + (parseInt(matches[2], 16) * 0.5) + (parseInt(matches[3], 16) * 0.3)) / 255;
+            return ratio > 0.3;
+        }
+        return matches ? true : false;
+    }
+
+    constructor (client: BaseSocketClient, name: string, color: string, ready = false) {
 
         super();
 
         this.client = client;
         this.name = name;
-        this.color = typeof (color) !== 'undefined' && this.validateColor(color) ? color : this.getRandomColor();
+        this.color = typeof (color) !== 'undefined' && BasePlayer.validateColor(color) ? color : BasePlayer.getRandomColor();
     }
 
     /**
@@ -49,7 +76,7 @@ export class BasePlayer extends EventEmitter {
      * Set color
      */
     setColor(color: string): boolean {
-        if (!this.validateColor(color, true)) {
+        if (!BasePlayer.validateColor(color, true)) {
             return false;
         }
         this.color = color;
@@ -87,33 +114,6 @@ export class BasePlayer extends EventEmitter {
         this.avatar.destroy();
         this.avatar = null;
         this.ready = false;
-    }
-
-    /**
-     * Get random Color
-     */
-    getRandomColor(): string {
-        let color = '';
-        const randomNum = () => Math.ceil(Math.random() * 255).toString(16);
-        while (!this.validateColor(color, true)) {
-            color = '#' + randomNum() + randomNum() + randomNum();
-        }
-        return color;
-    }
-
-    /**
-     * Validate color
-     */
-    validateColor(color: string, yiq?: any /* NFC */): boolean {
-        if (typeof (color) !== 'string') {
-            return false;
-        }
-        const matches = color.match(new RegExp('^#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})$'));
-        if (matches && yiq) {
-            const ratio = ((parseInt(matches[1], 16) * 0.4) + (parseInt(matches[2], 16) * 0.5) + (parseInt(matches[3], 16) * 0.3)) / 255;
-            return ratio > 0.3;
-        }
-        return matches ? true : false;
     }
 
     /**

@@ -1,12 +1,12 @@
 export class Collection<T> {
 
-    ids: number[] = [];
+    ids: string[] = [];
     items: T[] = [];
     key: string;
     index: boolean;
     id = 0;
 
-    constructor(items: T[] = [], key: string = 'id', index?: boolean) {
+    constructor (items: T[] = [], key: string = 'id', index?: boolean) {
 
         this.key = key;
         this.index = Boolean(index);
@@ -80,7 +80,7 @@ export class Collection<T> {
     /**
      * Remove an element by its id
      */
-    removeById(id: number): boolean {
+    removeById(id: string): boolean {
         const index = this.ids.indexOf(id);
 
         if (index >= 0) {
@@ -116,7 +116,7 @@ export class Collection<T> {
     /**
      * Get the index fo the given id
      */
-    getIdIndex(id: number): number {
+    getIdIndex(id: string): number {
         return this.ids.indexOf(id);
     }
 
@@ -131,7 +131,7 @@ export class Collection<T> {
     /**
      * Get an element by its id
      */
-    getById(id: number): T {
+    getById(id: string): T {
         const index = this.ids.indexOf(id);
 
         return index >= 0 ? this.items[index] : null;
@@ -154,7 +154,7 @@ export class Collection<T> {
     /**
      * Test if the given index exists is in the collection
      */
-    indexExists(index: number): boolean {
+    indexExists(index: string): boolean {
         return this.ids.indexOf(index) >= 0;
     }
 
