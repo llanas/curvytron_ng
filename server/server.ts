@@ -4,7 +4,6 @@ import { Collection } from '@shared/collection';
 import { BaseSocketClient } from '@shared/core/BaseSocketClient';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
-import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
 
@@ -23,16 +22,14 @@ export class CurvytronServer extends EventEmitter {
     roomRepository: RoomRepository;
     roomsController: RoomsController;
 
-    constructor(port: number) {
+    constructor (port: number) {
 
         super();
 
-        this.app = express();
-        this.server = new http.Server(this.app);
         this.socket = new WebSocket.Server({ port });
         console.log('Listening on port : ' + port);
         this.socket.on('connection', this.onSocketConnection);
-        this.server.on('errer', this.onError);
+        this.socket.on('error', this.onError);
         this.clients = new Collection<ServerSocketClient>([], 'id', true);
 
         this.roomRepository = new RoomRepository();
