@@ -1,4 +1,3 @@
-import { BaseSocketClient } from '@shared/core/BaseSocketClient';
 import { EventEmitter } from 'events';
 
 import { BaseAvatar } from './BaseAvatar';
@@ -18,7 +17,7 @@ export class BasePlayer extends EventEmitter {
      */
     static colorMaxLength = 20;
 
-    client: BaseSocketClient;
+    clientId: string;
     name: string;
     color: string;
     ready: boolean;
@@ -56,11 +55,11 @@ export class BasePlayer extends EventEmitter {
         return matches ? true : false;
     }
 
-    constructor (client: BaseSocketClient, name: string, color: string, ready = false) {
+    constructor (clientId: string, name: string, color: string, ready = false) {
 
         super();
 
-        this.client = client;
+        this.clientId = clientId;
         this.name = name;
         this.color = typeof (color) !== 'undefined' && BasePlayer.validateColor(color) ? color : BasePlayer.getRandomColor();
     }
@@ -121,7 +120,7 @@ export class BasePlayer extends EventEmitter {
      */
     serialize(): SerializedBasePlayer {
         return {
-            client: this.client.id,
+            client: this.clientId,
             id: this.id,
             name: this.name,
             color: this.color,

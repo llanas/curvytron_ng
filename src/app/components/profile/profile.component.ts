@@ -12,14 +12,19 @@ import { ProfileService } from 'src/app/services/profile.service';
 })
 export class ProfileComponent extends EventEmitter implements OnInit {
 
-    static NAME_MAX_LENGTH = BasePlayer.maxLength;
-    static COLOR_MAX_LENGTH = BasePlayer.colorMaxLength;
-
     open = false;
     loaded = false;
     tuto = null;
     panel = null;
     controls = null;
+
+    get nameMaxLength() {
+        return BasePlayer.maxLength;
+    }
+
+    get colorMaxLength() {
+        return BasePlayer.colorMaxLength;
+    }
 
     ngOnInit(): void {
         this.panel = document.querySelector('.panel');
@@ -29,7 +34,7 @@ export class ProfileComponent extends EventEmitter implements OnInit {
         this.emit('loaded');
     }
 
-    constructor (private profile: ProfileService) {
+    constructor (public profile: ProfileService) {
         super();
     }
 

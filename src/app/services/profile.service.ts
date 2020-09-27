@@ -3,7 +3,7 @@ import { BasePlayer } from '@shared/model/BasePlayer';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
-import { PlayerControl } from '../models/player-control';
+import { PlayerControl } from '../models/player-control.model';
 
 @Injectable({
     providedIn: 'root'
