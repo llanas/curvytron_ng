@@ -1,6 +1,6 @@
 import { Collection } from '@shared/collection';
 import { boundMethod } from 'autobind-decorator';
-import { EventEmitter } from 'protractor';
+import { EventEmitter } from 'events';
 
 import { RoomListItem } from '../models/room-list-item.model';
 import { Room } from '../models/room.model';
