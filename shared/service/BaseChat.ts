@@ -1,6 +1,7 @@
 import { Collection } from '@shared/collection';
-import { BaseMessage } from '@shared/model/BaseMessage';
 import { EventEmitter } from 'events';
+
+import { BaseMessage } from '../model/BaseMessage';
 
 /**
  * BaseChat system
@@ -9,7 +10,7 @@ export class BaseChat extends EventEmitter {
 
     messages: Collection<BaseMessage>;
 
-    constructor() {
+    constructor () {
         super();
         this.messages = new Collection([], 'id', true);
     }

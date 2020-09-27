@@ -1,5 +1,6 @@
 import { BasePlayer, SerializedBasePlayer } from '@shared/model/BasePlayer';
-import { ServerSocketClient } from 'core/ServerSocketClient';
+
+import { ServerSocketClient } from '../core/ServerSocketClient';
 
 /**
  * Player

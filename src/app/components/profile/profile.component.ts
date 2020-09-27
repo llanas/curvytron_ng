@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BasePlayer } from '@shared/model/BasePlayer';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
-import { ProfileService } from 'src/app/services/profile.service';
+
+import { ProfileService } from '../../services/profile.service';
 
 
 @Component({

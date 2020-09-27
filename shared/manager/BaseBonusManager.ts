@@ -1,8 +1,9 @@
-import { Collection } from '@shared/collection';
-import { BaseBonus } from '@shared/model/BaseBonus';
-import { BaseGame } from '@shared/model/BaseGame';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
+
+import { Collection } from '../collection';
+import { BaseBonus } from '../model/BaseBonus';
+import { BaseGame } from '../model/BaseGame';
 
 /**
  * Base Bonus Manager
@@ -32,7 +33,7 @@ export class BaseBonusManager extends EventEmitter {
     bonusPopingTime: number;
     bonusPopingMargin: number;
 
-    constructor(game: BaseGame) {
+    constructor (game: BaseGame) {
 
         super();
 

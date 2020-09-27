@@ -1,7 +1,7 @@
-import { Collection } from '@shared/collection';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
+import { Collection } from '../collection';
 import { BaseGame } from './BaseGame';
 import { BasePlayer, SerializedBasePlayer } from './BasePlayer';
 import { BaseRoomConfig, SerializedBaseRoomConfig } from './BaseRoomConfig';
@@ -35,7 +35,7 @@ export class BaseRoom extends EventEmitter {
     launchTime: number;
     open: boolean;
 
-    constructor(name: string) {
+    constructor (name: string) {
 
         super();
 

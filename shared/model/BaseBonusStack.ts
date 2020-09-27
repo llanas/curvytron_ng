@@ -1,6 +1,6 @@
-import { Collection } from '@shared/collection';
 import { EventEmitter } from 'events';
 
+import { Collection } from '../collection';
 import { BaseBonus } from './BaseBonus';
 
 /**
@@ -11,7 +11,7 @@ export class BaseBonusStack extends EventEmitter {
     target: any;
     bonuses: Collection<BaseBonus>;
 
-    constructor(target: any) {
+    constructor (target: any) {
 
         super();
 

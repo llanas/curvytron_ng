@@ -73,7 +73,7 @@ export class Player extends BasePlayer {
      * Get binding
      */
     getBinding(): number[] {
-        //TODO bindings propres ..
+        // TODO bindings propres ..
         return [this.controls[0].mapper.value, this.controls[1].mapper.value, 38, 40];
     }
 
