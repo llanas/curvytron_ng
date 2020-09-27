@@ -41,9 +41,9 @@ export class SoundManagerService {
 
         this.active = this.profile.sound;
 
-        createjs.Sound.alternateExtensions = ['mp3'];
-        createjs.Sound.registerSounds(SoundManagerService.sounds, SoundManagerService.directory);
-        createjs.Sound.setVolume(this.active ? SoundManagerService.volume : 0);
+        // createjs.Sound.alternateExtensions = ['mp3'];
+        // createjs.Sound.registerSounds(SoundManagerService.sounds, SoundManagerService.directory);
+        // createjs.Sound.setVolume(this.active ? SoundManagerService.volume : 0);
     }
 
     /**
@@ -51,7 +51,7 @@ export class SoundManagerService {
      */
     play(sound: string) {
         if (this.active) {
-            createjs.Sound.play(sound);
+            // createjs.Sound.play(sound);
         }
     }
 
@@ -59,7 +59,7 @@ export class SoundManagerService {
      * Sound manager
      */
     stop() {
-        createjs.Sound.stop();
+        // createjs.Sound.stop();
     }
 
     /**
@@ -67,7 +67,7 @@ export class SoundManagerService {
      */
     setActive(active: boolean) {
         this.active = active ? true : false;
-        this.setVolume(this.active ? SoundManagerService.volume : 0);
+        // this.setVolume(this.active ? SoundManagerService.volume : 0);
         this.profile.setSound(this.active);
     }
 
@@ -75,6 +75,6 @@ export class SoundManagerService {
      * Set volume
      */
     setVolume(volume: number) {
-        createjs.Sound.setVolume(typeof (volume) !== 'undefined' ? volume : SoundManagerService.volume);
+        // createjs.Sound.setVolume(typeof (volume) !== 'undefined' ? volume : SoundManagerService.volume);
     }
 }

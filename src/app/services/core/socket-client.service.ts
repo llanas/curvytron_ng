@@ -11,7 +11,9 @@ export class SocketClientService extends BaseSocketClient {
 
         const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
         // super(new window.WebSocket(protocol + document.location.host + document.location.pathname, ['websocket']));
-        super(new window.WebSocket(protocol + 'localhost:8090', ['websocket']));
+        // tslint:disable-next-line: no-string-literal
+        const socket = window['WebSocket'] || window['MozWebSocket'];
+        super(new socket(protocol + 'localhost:8090', ['websocket']));
 
         this.id = null;
         this.connected = false;
