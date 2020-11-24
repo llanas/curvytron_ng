@@ -30,18 +30,18 @@
                 <ng-template ngPluralCase="=1">You can join 1 room!</ng-template>
                 <ng-template ngPluralCase="few">You can join rooms!</ng-template>
             </span>
-            <form (ngSubmit)="createRoom()" class="top-right-form">
-                <button type="submit" id="submit">
+            <form class="top-right-form">
+                <button (click)="createRoom()" type="button" id="submit">
                     <span><i class="icon-plus"></i></span>
                 </button>
-                <input type="text" ng-model="roomName" class="form-control clearfix" name="name"
+                <input type="text" [(ngModel)]="roomName" class="form-control clearfix" name="roomName"
                     placeholder="Create a new room..." attr.maxlength="{{ roomMaxLength }}" />
             </form>
         </h2>
 
         <table id="rooms" class="rooms table table-hover v-align-middle" *ngIf="!rooms.isEmpty()">
             <tbody>
-                <ng-container *ngFor="let room of rooms.items; trackBy:room.name">
+                <ng-container *ngFor="let room of rooms.items; trackBy: trackByRooms">
                     <tr *ngIf="!room.game" (click)="join(room)" class="room" [ngClass]="{private: !room.open}">
                         <td class="room-name">{{ room.name }}</td>
                         <td class="room-nb-players" [ngPlural]="room.players">
@@ -63,7 +63,7 @@
                         </td>
                     </tr>
                 </ng-container>
-                <ng-container *ngFor="let room of rooms.items; trackBy:room.name">
+                <ng-container *ngFor="let room of rooms.items; trackBy: trackByRooms">
                     <tr *ngIf="room.game" (click)="join(room)" class="room in-game" [ngClass]="{private: !room.open}">
                         <td class="room-name">{{ room.name }}</td>
                         <td class="room-nb-players" [ngPlural]="room.players">

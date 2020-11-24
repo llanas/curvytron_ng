@@ -87,7 +87,7 @@ export class RoomsRepository extends EventEmitter {
      * On room open
      */
     @boundMethod
-    onRoomOpen({ detail }: { detail: any }): boolean {
+    onRoomOpen(detail: any): boolean {
         const room = this.createRoom(detail);
 
         if (this.rooms.add(room)) {
@@ -101,7 +101,7 @@ export class RoomsRepository extends EventEmitter {
      * On close room
      */
     @boundMethod
-    onRoomClose({ detail }: { detail: any }): boolean {
+    onRoomClose(detail: any): boolean {
         const room = this.get(detail.name);
 
         if (room && this.rooms.remove(room)) {
@@ -115,7 +115,7 @@ export class RoomsRepository extends EventEmitter {
      * On room config open change
      */
     @boundMethod
-    onRoomConfigOpen({ detail }: { detail: any }): boolean {
+    onRoomConfigOpen(detail: any): boolean {
         const room = this.get(detail.name);
 
         if (room) {
@@ -130,7 +130,7 @@ export class RoomsRepository extends EventEmitter {
      * On room players change
      */
     @boundMethod
-    onRoomPlayers({ detail }: { detail: any }): boolean {
+    onRoomPlayers(detail: any): boolean {
         const room = this.get(detail.name);
 
         if (room) {
@@ -145,7 +145,7 @@ export class RoomsRepository extends EventEmitter {
      * On room game change
      */
     @boundMethod
-    onRoomGame({ detail }: { detail: any }): boolean {
+    onRoomGame(detail: any): boolean {
         const room = this.get(detail.name);
 
         if (room) {

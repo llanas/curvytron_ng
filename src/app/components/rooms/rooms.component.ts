@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Collection } from '@shared/collection';
 import { BaseRoom } from '@shared/model/BaseRoom';
@@ -24,7 +25,7 @@ export class RoomsComponent extends EventEmitter implements OnInit {
         return BaseRoom.maxLength;
     }
 
-    constructor (private socketClient: SocketClientService) {
+    constructor (private socketClient: SocketClientService, private location: Location) {
 
         super();
 
@@ -76,7 +77,6 @@ export class RoomsComponent extends EventEmitter implements OnInit {
     /**
      * Create a room
      */
-    @boundMethod
     createRoom() {
         this.repository.create(this.roomName, this.onCreateRoom);
     }
@@ -89,14 +89,9 @@ export class RoomsComponent extends EventEmitter implements OnInit {
         if (success) {
             this.name = null;
             this.joinRoom(this.repository.createRoom(room));
-            this.applyScope();
         } else {
             console.error('Could not create room %s', this.name);
         }
-    }
-
-    applyScope() {
-        throw new Error('Method not implemented.');
     }
 
     /**
@@ -105,9 +100,9 @@ export class RoomsComponent extends EventEmitter implements OnInit {
     @boundMethod
     joinRoom(room: RoomListItem) {
         if (room.open) {
-            // this.$location.path(room.getUrl());
+            this.location.go(room.getUrl());
         } else if (room.password && room.password.match(new RegExp('[0-9]{4}'))) {
-            // this.$location.path(room.getUrl()).search('password', room.password);
+            this.location.go(room.getUrl(), `password=${room.password}`);
         }
     }
 
@@ -124,5 +119,9 @@ export class RoomsComponent extends EventEmitter implements OnInit {
             this.roomName = 'Hello Curvytron!';
             this.createRoom();
         }
+    }
+
+    trackByRooms(index: number, room: BaseRoom) {
+        return room.name;
     }
 }
