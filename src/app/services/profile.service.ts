@@ -21,6 +21,7 @@ export class ProfileService extends EventEmitter {
     radio = false;
     loading = false;
     controls: any[];
+    controller: any;
 
     constructor () {
 

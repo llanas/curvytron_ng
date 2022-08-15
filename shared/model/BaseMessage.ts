@@ -1,5 +1,8 @@
 export class BaseMessage {
-    constructor() {
+
+    content: string;
+
+    constructor () {
 
     }
 

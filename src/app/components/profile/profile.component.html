@@ -12,16 +12,16 @@
             <div class="form-row">
                 <div class="col">
                     <label for="profile-name">My name:</label>
-                    <input id="profile-name" type="text" (blur)="profile.persist()" [value]="profile.name"
+                    <input id="profile-name" type="text" (blur)="profileService.persist()" [value]="profileService.name"
                         class="form-control" name="name" placeholder="Choose a name"
                         attr.maxlength="{{ nameMaxLength }}" />
                 </div>
 
                 <div class="col">
                     <label for="profile-color">My color:</label>
-                    <input id="profile-color" type="text" (blur)="profile.persist()" colorpicker="hex"
-                        colorpicker-position="bottom" [value]="profile.color" class="form-control player-color"
-                        name="color" placeholder="#CCCCCC" [style.border-color]="profile.color"
+                    <input id="profile-color" type="text" (blur)="profileService.persist()" colorpicker="hex"
+                        colorpicker-position="bottom" [value]="profileService.color" class="form-control player-color"
+                        name="color" placeholder="#CCCCCC" [style.border-color]="profileService.color"
                         attr.maxlength="{{ colorMaxLength }}" />
                 </div>
                 <div class="clearfix"></div>
@@ -32,7 +32,7 @@
             <legend>Controls:</legend>
 
             <div class="form-row">
-                <div class="col" *ngFor="let control of profile.controls; index as i">
+                <div class="col" *ngFor="let control of profileService.controls; index as i">
                     <label for="profile-controls-{{ i }}">{{ label }}</label>
                     <input id="profile-controls-{{ i }}" type="text" [value]="control.mapper.view"
                         class="form-control control" name="control[{{ i }}]" (focus)="control.start()"
@@ -50,13 +50,14 @@
             <div class="form-row clearfix">
                 <div class="col">
                     <label for="profile-radio">Radio:</label>
-                    <span id="profile-radio" class="btn-toggle radio-sound" [ngClass]="{ active: profile.radio }">
+                    <span id="profile-radio" class="btn-toggle radio-sound"
+                        [ngClass]="{ active: profileService.radio }">
                         <i class="icon-radio"></i>
                     </span>
                 </div>
                 <div class="col">
                     <label for="profile-sound">Sound effects:</label>
-                    <span id="profile-sound" class="btn-toggle sound" [ngClass]="{ active: profile.sound }">
+                    <span id="profile-sound" class="btn-toggle sound" [ngClass]="{ active: profileService.sound }">
                         <i class="icon-volume"></i>
                     </span>
                 </div>
@@ -76,11 +77,11 @@
             We just need to know a few things before you start playing:
         </p>
         <ul class="list">
-            <li class="item first" [ngClass]="{ 'done': profile.name }">
+            <li class="item first" [ngClass]="{ 'done': profileService.name }">
                 Choose yourself player name.
                 <small>A name to find them, a name to rule them all...</small>
             </li>
-            <li class="item" [ngClass]="{ 'done': profile.color }">
+            <li class="item" [ngClass]="{ 'done': profileService.color }">
                 Pick a color that your like.
                 <small>Or one that you don't, why should I care...</small>
             </li>

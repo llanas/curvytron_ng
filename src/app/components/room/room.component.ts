@@ -1,12 +1,15 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BaseRoom } from '@shared/model/BaseRoom';
 import { boundMethod } from 'autobind-decorator';
-import { profile } from 'console';
 import { EventEmitter } from 'events';
-import { Player, Player, Player, Player } from 'src/app/models/player.model';
+import { Player } from 'src/app/models/player.model';
 import { RoomRepository } from 'src/app/repositories/room.repository';
+import { ChatService } from 'src/app/services/chat.service';
 import { SocketClientService } from 'src/app/services/core/socket-client.service';
+import { NotifierService } from 'src/app/services/notifier.service';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
     selector: 'app-room',
@@ -15,31 +18,39 @@ import { SocketClientService } from 'src/app/services/core/socket-client.service
 })
 export class RoomComponent extends EventEmitter implements OnInit {
 
+    get nameMaxLength() {
+        return BaseRoom.maxLength;
+    }
+
+    get master() {
+        return this.repository.amIMaster();
+    }
+
     name: string;
     password: string;
-
-    repository: RoomRepository;
 
     controlSynchro: boolean;
     useTouch: boolean;
     launchInterval: any;
-    profile: any;
     room: any;
-    chat: any;
+    launching: number | boolean;
+    displayParameters: boolean;
 
-    constructor (private socketClient: SocketClientService, private route: ActivatedRoute, private location: Location) {
+    constructor (private socketClient: SocketClientService,
+        private repository: RoomRepository,
+        private route: ActivatedRoute,
+        private location: Location,
+        private profile: ProfileService,
+        private chat: ChatService,
+        private notifier: NotifierService) {
 
         super();
-
-        this.repository = new RoomRepository(this.socketClient);
 
         const roomName = this.route.snapshot.params.name;
         const password = this.route.snapshot.queryParams.password;
 
-        // this.client = client;
-        // this.profile = profile;
-        // this.chat = chat;
-        // this.notifier = notifier;
+        this.chat = chat;
+        this.notifier = notifier;
         // this.hasTouch = typeof (window.ontouchstart) !== 'undefined';
         this.name = decodeURIComponent(roomName);
         this.password = typeof (password) !== 'undefined' ? password : null;
@@ -150,7 +161,7 @@ export class RoomComponent extends EventEmitter implements OnInit {
     /**
      * Set profile name
      */
-    setProfileName(player: { name: any; setName: (arg0: any) => void; }) {
+    setProfileName(player: Player) {
         if (this.profile.name !== player.name) {
             player.setName(this.profile.name);
             this.setName(player);
@@ -160,7 +171,7 @@ export class RoomComponent extends EventEmitter implements OnInit {
     /**
      * Set profile color
      */
-    setProfileColor(player: { color: any; setColor: (arg0: any) => void; }) {
+    setProfileColor(player: Player) {
         if (this.profile.color !== player.color) {
             player.setColor(this.profile.color);
             this.setColor(player);
@@ -235,10 +246,7 @@ export class RoomComponent extends EventEmitter implements OnInit {
      * Add player
      */
     @boundMethod
-    addPlayer(name: string, color: string) {
-
-        // name = typeof (name) !== 'undefined' ? name : $scope.username;
-        color = typeof (color) !== 'undefined' ? color : null;
+    addPlayer(name: string = this.name, color: string = null) {
 
         if (name) {
             this.repository.addPlayer(
@@ -332,9 +340,11 @@ export class RoomComponent extends EventEmitter implements OnInit {
             player,
             player.color,
             (result) => {
-                if (player.profile) {
-                    this.profile.setColor(player.color);
-                }
+
+                // TODO find profile attribute
+                // if (player.profile) {
+                //     this.profile.setColor(player.color);
+                // }
             }
         );
     }
@@ -343,11 +353,11 @@ export class RoomComponent extends EventEmitter implements OnInit {
      * Set player name
      */
     @boundMethod
-    setName(player: { local: any; id: Player; name: string; profile: any; }): any {
+    setName(player: Player): any {
         if (!player.local) { return; }
 
         this.repository.setName(
-            player.id,
+            player,
             player.name,
             (result) => {
                 if (!result.success) {
@@ -361,9 +371,10 @@ export class RoomComponent extends EventEmitter implements OnInit {
                     }
                 }
 
-                if (player.profile) {
-                    this.profile.setName(player.name);
-                }
+                // TODO find profile attribute
+                // if (player.profile) {
+                //     this.profile.setName(player.name);
+                // }
             }
         );
     }
@@ -390,7 +401,7 @@ export class RoomComponent extends EventEmitter implements OnInit {
      */
     @boundMethod
     setTouch() {
-        if (!this.hasTouch) { return; }
+        // if (!this.hasTouch) { return; }
 
         this.useTouch = true;
 
@@ -406,11 +417,8 @@ export class RoomComponent extends EventEmitter implements OnInit {
      */
     @boundMethod
     start(e: any) {
-        this.$location.path(this.room.getGameUrl());
-
-        if (this.room.config.open) {
-            this.$location.search('password', this.room.config.password);
-        }
+        const passwordQuery = (this.room.config.open) ? `password=${this.room.config.password}` : '';
+        this.location.go(this.room.getGameUrl(), passwordQuery);
     }
 
     /**
@@ -462,7 +470,7 @@ export class RoomComponent extends EventEmitter implements OnInit {
     onLaunchStart(e: any) {
         this.clearLaunchInterval();
         this.launchInterval = setInterval(this.onLaunchTimer, 1000);
-        this.$scope.launching = this.repository.room.launchTime / 1000;
+        this.launching = this.repository.room.launchTime / 1000;
     }
 
     /**
@@ -471,7 +479,7 @@ export class RoomComponent extends EventEmitter implements OnInit {
     @boundMethod
     onLaunchCancel(e: any) {
         this.clearLaunchInterval();
-        this.$scope.launching = false;
+        this.launching = false;
     }
 
     /**
@@ -479,8 +487,8 @@ export class RoomComponent extends EventEmitter implements OnInit {
      */
     @boundMethod
     onLaunchTimer(e: any) {
-        if (this.$scope.launching) {
-            this.$scope.launching--;
+        if (typeof this.launching === 'number') {
+            this.launching--;
         }
     }
 
@@ -489,6 +497,6 @@ export class RoomComponent extends EventEmitter implements OnInit {
      */
     @boundMethod
     toggleParameters() {
-        this.$scope.displayParameters = !this.$scope.displayParameters;
+        this.displayParameters = !this.displayParameters;
     }
 }

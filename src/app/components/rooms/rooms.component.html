@@ -42,7 +42,7 @@
         <table id="rooms" class="rooms table table-hover v-align-middle" *ngIf="!rooms.isEmpty()">
             <tbody>
                 <ng-container *ngFor="let room of rooms.items; trackBy: trackByRooms">
-                    <tr *ngIf="!room.game" (click)="join(room)" class="room" [ngClass]="{private: !room.open}">
+                    <tr *ngIf="!room.game" (click)="joinRoom(room)" class="room" [ngClass]="{private: !room.open}">
                         <td class="room-name">{{ room.name }}</td>
                         <td class="room-nb-players" [ngPlural]="room.players">
                             <ng-template ngPluralCase="=0">No player</ng-template>

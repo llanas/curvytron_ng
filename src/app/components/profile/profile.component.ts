@@ -27,6 +27,10 @@ export class ProfileComponent extends EventEmitter implements OnInit {
         return BasePlayer.colorMaxLength;
     }
 
+    get profileService() {
+        return this.profile;
+    }
+
     ngOnInit(): void {
         this.panel = document.querySelector('.panel');
         this.controls = this.panel.querySelectorAll('input.control');
@@ -35,7 +39,7 @@ export class ProfileComponent extends EventEmitter implements OnInit {
         this.emit('loaded');
     }
 
-    constructor (public profile: ProfileService) {
+    constructor (private profile: ProfileService) {
         super();
     }
 

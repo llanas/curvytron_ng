@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { Collection } from '@shared/collection';
 import { BasePlayer } from '@shared/model/BasePlayer';
 import { boundMethod } from 'autobind-decorator';
@@ -11,9 +12,12 @@ import { SocketClientService } from '../services/core/socket-client.service';
 /**
  * Room Repository
  */
+@Injectable({
+    providedIn: 'root'
+})
 export class RoomRepository extends EventEmitter {
 
-    room: any;
+    room: Room;
     master: any;
     clients: any;
     playerCache: any;

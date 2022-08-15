@@ -2,6 +2,7 @@ import { Collection } from '@shared/collection';
 import { BaseRoom } from '@shared/model/BaseRoom';
 
 import { Player } from './player.model';
+import RoomConfig from './room-config.model';
 
 
 
@@ -12,6 +13,7 @@ export class Room extends BaseRoom {
 
     // OVERRIDE
     players: Collection<Player>;
+    config: RoomConfig;
 
     constructor (name: string) {
 
