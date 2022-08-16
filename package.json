@@ -5,6 +5,7 @@
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build",
+        "watch": "ng build --watch",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e"
@@ -42,7 +43,7 @@
         "@types/angular-sanitize": "^1.7.0",
         "@types/jasmine": "^3.5.4",
         "@types/jasminewd2": "~2.0.3",
-        "@types/node": "^12.11.1",
+        "@types/node": "^12.12.62",
         "@types/soundjs": "^0.6.27",
         "autobind-decorator": "^2.4.0",
         "codelyzer": "^5.1.2",

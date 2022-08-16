@@ -29,7 +29,7 @@ export class CurvytronServer extends EventEmitter {
         this.socket = new WebSocket.Server({ port });
         console.log('Listening on port : ' + port);
         this.socket.on('connection', this.onSocketConnection);
-        this.socket.on('error', this.onError);
+        this.socket.on('error', (error, errorCode) => console.log('Error: ' + errorCode));
         this.clients = new Collection<ServerSocketClient>([], 'id', true);
 
         this.roomRepository = new RoomRepository();
@@ -52,14 +52,6 @@ export class CurvytronServer extends EventEmitter {
     onSocketDisconnection(client: ServerSocketClient) {
         console.log('Client %s disconnected.', client.id);
         this.clients.remove(client);
-    }
-
-    /**
-     * On error
-     */
-    @boundMethod
-    onError(error: Error) {
-        console.error('Server Error:', error.stack);
     }
 }
 

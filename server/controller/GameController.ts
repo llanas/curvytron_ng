@@ -28,7 +28,7 @@ export class GameController {
     waiting: any;
     callbacks: { onReady(): void; onMove(data: any): void; onSpeeding(data: any): void; };
 
-    constructor(game: Game) {
+    constructor (game: Game) {
 
 
         this.game = game;
@@ -252,7 +252,7 @@ export class GameController {
     /**
      * On move
      */
-    onMove(client: ServerSocketClient, { avatar, move }: { avatar: number, move: number }) {
+    onMove(client: ServerSocketClient, { avatar, move }: { avatar: string, move: number }) {
         const player = client.players.getById(avatar);
         if (player && player.avatar) {
             player.avatar.updateAngularVelocity(move);
@@ -262,7 +262,7 @@ export class GameController {
     /**
      * On move
      */
-    onSpeeding(client: ServerSocketClient, { avatar, speeding }: { avatar: number, speeding: number }) {
+    onSpeeding(client: ServerSocketClient, { avatar, speeding }: { avatar: string, speeding: number }) {
         const player = client.players.getById(avatar);
         if (player && player.avatar) {
             player.avatar.updateSpeeding(speeding);

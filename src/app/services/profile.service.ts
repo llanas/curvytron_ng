@@ -3,7 +3,7 @@ import { BasePlayer } from '@shared/model/BasePlayer';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
-import { PlayerControl } from '../models/player-control';
+import { PlayerControl } from '../models/player-control.model';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +21,7 @@ export class ProfileService extends EventEmitter {
     radio = false;
     loading = false;
     controls: any[];
+    controller: any;
 
     constructor () {
 

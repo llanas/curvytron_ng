@@ -1,0 +1,91 @@
+<section>
+    <div id="intro" class="container intro">
+        <blockquote class="quote">
+            <p>A multiplayer tron-like game... with curves!</p>
+        </blockquote>
+
+        <div class="tuto">
+            <img src="/src/assets/images/tuto/turn.gif" class="circle" alt="Turning" width="150" height="150">
+            <p class="content">You're always moving. But you can choose to go left or right.</p>
+        </div>
+
+        <div class="tuto">
+            <img src="/src/assets/images/tuto/death.gif" class="circle" alt="Turning" width="150" height="150">
+            <p class="content">If you hit another player's line or your own: you're dead!</p>
+        </div>
+
+        <div class="tuto">
+            <img src="/src/assets/images/tuto/bonus.gif" class="circle" alt="Turning" width="150" height="150">
+            <p class="content">There are bonuses on the map that can help you.</p>
+        </div>
+
+        <div class="clearfix"></div>
+
+    </div>
+
+    <div class="container room-list">
+        <h2 class="header" [ngClass]="{ 'empty': rooms.isEmpty() }">
+            <span class="title" [ngPlural]="rooms.items.length">
+                <ng-template ngPluralCase="=0">Start by creating a room:</ng-template>
+                <ng-template ngPluralCase="=1">You can join 1 room!</ng-template>
+                <ng-template ngPluralCase="few">You can join rooms!</ng-template>
+            </span>
+            <form class="top-right-form">
+                <button (click)="createRoom()" type="button" id="submit">
+                    <span><i class="icon-plus"></i></span>
+                </button>
+                <input type="text" [(ngModel)]="roomName" class="form-control clearfix" name="roomName"
+                    placeholder="Create a new room..." attr.maxlength="{{ roomMaxLength }}" />
+            </form>
+        </h2>
+
+        <table id="rooms" class="rooms table table-hover v-align-middle" *ngIf="!rooms.isEmpty()">
+            <tbody>
+                <ng-container *ngFor="let room of rooms.items; trackBy: trackByRooms">
+                    <tr *ngIf="!room.game" (click)="joinRoom(room)" class="room" [ngClass]="{private: !room.open}">
+                        <td class="room-name">{{ room.name }}</td>
+                        <td class="room-nb-players" [ngPlural]="room.players">
+                            <ng-template ngPluralCase="=0">No player</ng-template>
+                            <ng-template ngPluralCase="=1">1 player</ng-template>
+                            <ng-template ngPluralCase="few">{{room.players.length}} players</ng-template>
+                        </td>
+                        <td class="room-enter-col">
+                            <i class="icon-lock" *ngIf="!room.open"></i>
+                            <form class="room-password-col" *ngIf="!room.open" (ng-submit)="join(room)">
+                                <input type="text" class="form-control password" maxlength="4" [value]="room.password"
+                                    placeholder="••••" />
+                            </form>
+                            <div class="room-enter-container">
+                                <p class="room-enter">
+                                    <span><i class="icon-game"></i> Join</span>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngFor="let room of rooms.items; trackBy: trackByRooms">
+                    <tr *ngIf="room.game" (click)="join(room)" class="room in-game" [ngClass]="{private: !room.open}">
+                        <td class="room-name">{{ room.name }}</td>
+                        <td class="room-nb-players" [ngPlural]="room.players">
+                            <ng-template ngPluralCase="=0">No player</ng-template>
+                            <ng-template ngPluralCase="=1">1 player</ng-template>
+                            <ng-template ngPluralCase="few">{{room.players.length}} players</ng-template>
+                        </td>
+                        <td class="room-enter-col">
+                            <i class="icon-lock" *ngIf="!room.open"></i>
+                            <form class="room-password-col" *ngIf="!room.open" (ng-submit)="join(room)">
+                                <input type="text" class="form-control password" maxlength="4" [value]="room.password"
+                                    placeholder="••••" />
+                            </form>
+                            <div class="room-enter-container">
+                                <p class="room-enter">
+                                    <span><i class="icon-spectate"></i> Spectate</span>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</section>

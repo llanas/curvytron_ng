@@ -26,7 +26,6 @@ export class RadioService {
         const video = document.createElement('video');
         const source = document.createElement('source');
         video.appendChild(source);
-        video.name = 'media';
         video.autoplay = true;
         video.volume = this.volume;
         source.type = 'audio/mpeg';

@@ -1,9 +1,9 @@
-import { Collection } from '@shared/collection';
-import { BaseBonusManager } from '@shared/manager/BaseBonusManager';
-import { BaseFPSLogger } from '@shared/service/BaseFPSLogger';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
 
+import { Collection } from '../collection';
+import { BaseBonusManager } from '../manager/BaseBonusManager';
+import { BaseFPSLogger } from '../service/BaseFPSLogger';
 import { BaseAvatar, SerializedBaseAvatar } from './BaseAvatar';
 import { BaseRoom } from './BaseRoom';
 
@@ -62,7 +62,7 @@ export class BaseGame extends EventEmitter {
     borderless: boolean;
     world: any;
 
-    constructor(room: BaseRoom) {
+    constructor (room: BaseRoom) {
 
         super();
 

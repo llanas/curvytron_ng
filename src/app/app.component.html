@@ -12,8 +12,7 @@
     </a>
 </header>
 
-<div *ngIf="profile">
-    <!-- <ng-include src="'js/views/profile/link.html'"></ng-include> -->
+<div>
     <app-profile id="profile" class="panel"></app-profile>
 </div>
 
@@ -22,7 +21,7 @@
 </div>
 
 <div id="main" *ngIf="status === 'online'">
-    <h3>Connected!</h3>
+    <router-outlet></router-outlet>
 </div>
 
 <div id="error" *ngIf="status === 'disconnected'" class="container text-center">

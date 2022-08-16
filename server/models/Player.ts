@@ -1,4 +1,3 @@
-import { BaseSocketClient } from '@shared/core/BaseSocketClient';
 import { BasePlayer, SerializedBasePlayer } from '@shared/model/BasePlayer';
 
 import { ServerSocketClient } from '../core/ServerSocketClient';
@@ -10,8 +9,8 @@ export class Player extends BasePlayer {
 
     client: ServerSocketClient;
 
-    constructor(client: BaseSocketClient, name: string, color: string) {
-        super(client, name, color);
+    constructor (client: ServerSocketClient, name: string, color: string) {
+        super(client.id, name, color);
     }
 
     /**

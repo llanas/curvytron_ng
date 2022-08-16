@@ -52,7 +52,7 @@ export class PlayerControl extends EventEmitter {
     /**
      * Get mapping
      */
-    getMapping() {
+    getMapping(): { mapper: string, value: number } {
         return {
             mapper: this.mapper.id,
             value: this.mapper.value

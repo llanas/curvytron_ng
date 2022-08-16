@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BasePlayer } from '@shared/model/BasePlayer';
 import { boundMethod } from 'autobind-decorator';
 import { EventEmitter } from 'events';
-import { ProfileService } from 'src/app/services/profile.service';
+
+import { ProfileService } from '../../services/profile.service';
 
 
 @Component({
@@ -12,14 +13,23 @@ import { ProfileService } from 'src/app/services/profile.service';
 })
 export class ProfileComponent extends EventEmitter implements OnInit {
 
-    static NAME_MAX_LENGTH = BasePlayer.maxLength;
-    static COLOR_MAX_LENGTH = BasePlayer.colorMaxLength;
-
     open = false;
     loaded = false;
     tuto = null;
     panel = null;
     controls = null;
+
+    get nameMaxLength() {
+        return BasePlayer.maxLength;
+    }
+
+    get colorMaxLength() {
+        return BasePlayer.colorMaxLength;
+    }
+
+    get profileService() {
+        return this.profile;
+    }
 
     ngOnInit(): void {
         this.panel = document.querySelector('.panel');

@@ -6,11 +6,11 @@ import { EventEmitter } from 'events';
  */
 export class BaseFPSLogger extends EventEmitter {
 
-    interval: NodeJS.Timer | null = null;
+    interval: NodeJS.Timeout | null = null;
     frames = 0;
     frequency = 0;
 
-    constructor() {
+    constructor () {
 
         super();
 
